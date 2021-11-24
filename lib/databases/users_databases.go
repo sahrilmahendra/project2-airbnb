@@ -13,16 +13,17 @@ var user models.Users
 // function database untuk menampilkan user by id
 func GetUserById(id int) (interface{}, error) {
 	users := models.Users{}
-	type get_user struct {
-		Nama  string
-		Email string
-	}
+	var get_user models.GetUser
+
 	err := config.DB.Find(&users, id)
 	rows_affected := config.DB.Find(&users, id).RowsAffected
 	if err.Error != nil || rows_affected < 1 {
 		return nil, err.Error
 	}
-	return get_user{users.Nama, users.Email}, nil
+	get_user.ID = users.ID
+	get_user.Name = users.Name
+	get_user.Email = users.Email
+	return get_user, nil
 }
 
 // function database untuk mengecek user by email

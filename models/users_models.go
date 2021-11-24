@@ -5,14 +5,14 @@ import "gorm.io/gorm"
 // struktur data users
 type Users struct {
 	gorm.Model
-	Nama     string `json:"nama" form:"nama"`
+	Name     string `json:"name" form:"name"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 	Token    string
 }
 
 type GetUser struct {
-	ID    int
-	Nama  string
+	ID    uint
+	Name  string
 	Email string
 }

@@ -14,6 +14,7 @@ func New() *echo.Echo {
 	// users
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)
+	e.POST("/reservation", controllers.CreateReservationControlllers)
 
 	// group JWT
 	j := e.Group("/jwt")

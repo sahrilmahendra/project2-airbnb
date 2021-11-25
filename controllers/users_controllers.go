@@ -16,7 +16,7 @@ import (
 
 // struktur data untuk validasi user
 type ValidatorUser struct {
-	Nama     string `validate:"required"`
+	Name     string `validate:"required"`
 	Email    string `validate:"required,email"`
 	Password string `validate:"required"`
 }
@@ -43,7 +43,7 @@ func CreateUserControllers(c echo.Context) error {
 
 	v := validator.New()
 	validasi_user := ValidatorUser{
-		Nama:     new_user.Nama,
+		Name:     new_user.Name,
 		Email:    new_user.Email,
 		Password: new_user.Password,
 	}
@@ -52,11 +52,11 @@ func CreateUserControllers(c echo.Context) error {
 		new_user.Password, _ = helper.HashPassword(new_user.Password) // generate plan password menjadi hash
 		_, err = databases.CreateUser(&new_user)
 	}
-	check, _ := databases.GetUserByEmail(new_user.Email)
-	if err != nil || check > 0 {
+	// check, _ := databases.GetUserByEmail(new_user.Email)
+	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(new_user))
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
 }
 
 // controller untuk menghapus user by id
@@ -97,7 +97,7 @@ func UpdateUserControllers(c echo.Context) error {
 
 	v := validator.New()
 	validasi_user := ValidatorUser{
-		Nama:     users.Nama,
+		Name:     users.Name,
 		Email:    users.Email,
 		Password: users.Password,
 	}

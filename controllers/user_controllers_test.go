@@ -30,12 +30,21 @@ type Login struct {
 // data dummy
 var (
 	mock_data_user = models.Users{
+<<<<<<< HEAD
 		Nama:     "test",
 		Email:    "test@gmail.com",
 		Password: "bismillah",
 	}
 	mock_data_login = models.Users{
 		Email:    "test@gmail.com",
+=======
+		Name:     "sahril",
+		Email:    "sahril@gmail.com",
+		Password: "bismillah",
+	}
+	mock_data_login = models.Users{
+		Email:    "sahril@gmail.com",
+>>>>>>> 794feb24dda8bb43e65aa01e01b6b73ca9c9c834
 		Password: "bismillah",
 	}
 )
@@ -100,7 +109,11 @@ func TestGetUserControllers(t *testing.T) {
 	t.Run("GET /jwt/users/:id", func(t *testing.T) {
 		assert.Equal(t, testCases.code, rec.Code)
 		assert.Equal(t, testCases.name, user.Message)
+<<<<<<< HEAD
 		assert.Equal(t, "test", user.Data.Nama)
+=======
+		assert.Equal(t, "sahril", user.Data.Name)
+>>>>>>> 794feb24dda8bb43e65aa01e01b6b73ca9c9c834
 	})
 
 }
@@ -271,7 +284,11 @@ func TestUpdateUserController(t *testing.T) {
 	t.Run("GET /jwt/users/:id", func(t *testing.T) {
 		assert.Equal(t, testCases.expectCode, rec.Code)
 		assert.Equal(t, testCases.name, user.Message)
+<<<<<<< HEAD
 		// assert.Equal(t, "test", user.Data.Nama)
+=======
+		// assert.Equal(t, "sahril", user.Data.Nama)
+>>>>>>> 794feb24dda8bb43e65aa01e01b6b73ca9c9c834
 	})
 }
 
@@ -666,7 +683,11 @@ func TestLoginGetUsersControllers(t *testing.T) {
 
 	e := InitEcho()
 	InsertUser()
+<<<<<<< HEAD
 	body, error := json.Marshal(Login{Email: "test@gmail.com", Password: "bismillah"})
+=======
+	body, error := json.Marshal(Login{Email: "sahril@gmail.com", Password: "bismillah"})
+>>>>>>> 794feb24dda8bb43e65aa01e01b6b73ca9c9c834
 	if error != nil {
 		t.Error(t, error, "error")
 	}

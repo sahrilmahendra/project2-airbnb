@@ -30,12 +30,12 @@ type Login struct {
 // data dummy
 var (
 	mock_data_user = models.Users{
-		Nama:     "andri",
-		Email:    "andri@gmail.com",
+		Nama:     "test",
+		Email:    "test@gmail.com",
 		Password: "bismillah",
 	}
 	mock_data_login = models.Users{
-		Email:    "andri@gmail.com",
+		Email:    "test@gmail.com",
 		Password: "bismillah",
 	}
 )
@@ -100,7 +100,7 @@ func TestGetUserControllers(t *testing.T) {
 	t.Run("GET /jwt/users/:id", func(t *testing.T) {
 		assert.Equal(t, testCases.code, rec.Code)
 		assert.Equal(t, testCases.name, user.Message)
-		assert.Equal(t, "andri", user.Data.Nama)
+		assert.Equal(t, "test", user.Data.Nama)
 	})
 
 }
@@ -271,7 +271,7 @@ func TestUpdateUserController(t *testing.T) {
 	t.Run("GET /jwt/users/:id", func(t *testing.T) {
 		assert.Equal(t, testCases.expectCode, rec.Code)
 		assert.Equal(t, testCases.name, user.Message)
-		// assert.Equal(t, "andri", user.Data.Nama)
+		// assert.Equal(t, "test", user.Data.Nama)
 	})
 }
 
@@ -666,7 +666,7 @@ func TestLoginGetUsersControllers(t *testing.T) {
 
 	e := InitEcho()
 	InsertUser()
-	body, error := json.Marshal(Login{Email: "andri@gmail.com", Password: "bismillah"})
+	body, error := json.Marshal(Login{Email: "test@gmail.com", Password: "bismillah"})
 	if error != nil {
 		t.Error(t, error, "error")
 	}

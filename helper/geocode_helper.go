@@ -4,12 +4,13 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 )
 
 // function untuk generate latitude, longitude menggunakan api geocode (google)
 func GetGeocodeLocations(s string) (float64, float64, error) {
-	google_api_key := "AIzaSyDVzOsxD_6zAX2dG6jqLFjBBw3jh9lGLbI"
+	google_api_key := os.Getenv("GOOGLE_API_KEY")
 	locationString := strings.ReplaceAll(s, " ", "+")
 	url := ("https://maps.googleapis.com/maps/api/geocode/json?address=" + locationString + "&key=" + google_api_key)
 	response, err := http.Get(url)

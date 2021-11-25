@@ -62,11 +62,11 @@ func GetHomestayByIdControllers(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
 	}
-	product, e := databases.GetHomestayById(id)
-	if e != nil || product == nil {
+	homestay, e := databases.GetHomestayById(id)
+	if e != nil || homestay == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(product))
+	return c.JSON(http.StatusOK, response.SuccessResponseData(homestay))
 }
 
 // controller untuk memperbarui homestay by id

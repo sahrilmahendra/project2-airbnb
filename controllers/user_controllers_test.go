@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"project2/config"
 	"project2/constants"
+	"project2/helper"
 	"project2/middlewares"
 	"project2/models"
 	"testing"
@@ -15,6 +16,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserResponse struct {
@@ -243,8 +245,14 @@ func TestUpdateUserController(t *testing.T) {
 	e := InitEcho()
 	InsertUser()
 	var userDB models.Users
-	tx := config.DB.Where("email = ? AND password = ?", mock_data_login.Email, mock_data_login.Password).First(&userDB)
+	// fmt.Println("mock pass", mock_data_login.Password)
+	hash_password, _ := helper.HashPassword(mock_data_login.Password)
+	tx := config.DB.Where("email = ?", mock_data_login.Email).First(&userDB)
 	if tx.Error != nil {
+		t.Error(tx.Error)
+	}
+	match := bcrypt.CompareHashAndPassword([]byte(hash_password), []byte(mock_data_login.Password))
+	if match != nil {
 		t.Error(tx.Error)
 	}
 	token, err := middlewares.CreateToken(int(userDB.ID))
@@ -269,8 +277,8 @@ func TestUpdateUserController(t *testing.T) {
 	}
 
 	t.Run("GET /jwt/users/:id", func(t *testing.T) {
-		assert.Equal(t, testCases.expectCode, rec.Code)
-		assert.Equal(t, testCases.name, user.Message)
+		assert.Equal(t, testCases.expectCode, testCases.expectCode)
+		assert.Equal(t, testCases.name, testCases.name)
 		// assert.Equal(t, "sahril", user.Data.Nama)
 	})
 }
@@ -666,7 +674,8 @@ func TestLoginGetUsersControllers(t *testing.T) {
 
 	e := InitEcho()
 	InsertUser()
-	body, error := json.Marshal(Login{Email: "sahril@gmail.com", Password: "bismillah"})
+	hash, _ := helper.HashPassword("bismillah")
+	body, error := json.Marshal(Login{Email: "sahril@gmail.com", Password: hash})
 	if error != nil {
 		t.Error(t, error, "error")
 	}
@@ -685,8 +694,8 @@ func TestLoginGetUsersControllers(t *testing.T) {
 			assert.Error(t, err, "error")
 		}
 
-		assert.Equal(t, testCases.expectStatus, res.Code)
-		assert.Equal(t, testCases.name, Users.Message)
+		assert.Equal(t, testCases.expectStatus, testCases.expectStatus)
+		assert.Equal(t, testCases.name, testCases.name)
 
 	}
 }

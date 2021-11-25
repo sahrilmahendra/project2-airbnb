@@ -2,7 +2,6 @@ package databases
 
 import (
 	"project2/config"
-	"project2/helper"
 	"project2/models"
 )
 
@@ -11,13 +10,6 @@ var get_homestay []models.GetHomestay
 
 // function database untuk membuat data homestay baru
 func CreateHomestay(homestay *models.Homestay) (interface{}, error) {
-	lat, lng, err := helper.GetGeocodeLocations(homestay.Address)
-	if err != nil {
-		return nil, err
-	}
-	homestay.Latitude = lat
-	homestay.Longitude = lng
-	homestay.Status = "Available"
 	if err := config.DB.Create(&homestay).Error; err != nil {
 		return nil, err
 	}
@@ -40,4 +32,27 @@ func GetHomestayById(id int) (interface{}, error) {
 		return nil, query.Error
 	}
 	return get_homestay_by_id, nil
+}
+
+// function database untuk memperbarui data homestay by id
+func UpdateHomestay(id int, update_homestay *models.Homestay) (interface{}, error) {
+	var homestay models.Homestay
+	query_select := config.DB.Find(&homestay, id)
+	if query_select.Error != nil || query_select.RowsAffected == 0 {
+		return nil, query_select.Error
+	}
+	query_update := config.DB.Model(&homestay).Updates(update_homestay)
+	if query_update.Error != nil {
+		return nil, query_update.Error
+	}
+	return homestay, nil
+}
+
+func GetIDUserHomestay(id int) (uint, error) {
+	var homestay models.Homestay
+	err := config.DB.Find(&homestay, id)
+	if err.Error != nil {
+		return 0, err.Error
+	}
+	return homestay.UsersID, nil
 }

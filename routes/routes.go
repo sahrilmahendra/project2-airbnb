@@ -24,6 +24,8 @@ func New() *echo.Echo {
 	j.PUT("/users/:id", controllers.UpdateUserControllers)
 	j.DELETE("/users/:id", controllers.DeleteUserControllers)
 
+	// homestay
+	j.POST("/homestay", controllers.CreateHomestayControllers)
 	return e
 
 }

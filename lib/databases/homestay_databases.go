@@ -7,7 +7,7 @@ import (
 )
 
 // var get_homestay models.GetHomestay
-// var get_homestay []models.GetHomestay
+var get_homestay []models.GetHomestay
 
 // function database untuk membuat data homestay baru
 func CreateHomestay(homestay *models.Homestay) (interface{}, error) {
@@ -22,4 +22,13 @@ func CreateHomestay(homestay *models.Homestay) (interface{}, error) {
 		return nil, err
 	}
 	return homestay, nil
+}
+
+// function database untuk menampilkan seluruh data homestay
+func GetAllHomestay() (interface{}, error) {
+	query := config.DB.Table("homestays").Select("*").Find(&get_homestay)
+	if query.Error != nil || query.RowsAffected == 0 {
+		return nil, query.Error
+	}
+	return get_homestay, nil
 }

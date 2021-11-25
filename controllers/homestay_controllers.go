@@ -18,7 +18,7 @@ type ValidatorHomestay struct {
 	Address       string `validate:"required"`
 }
 
-// controller untuk menambahkan user (registrasi)
+// controller untuk menambahkan homestay baru
 func CreateHomestayControllers(c echo.Context) error {
 	new_homestay := models.Homestay{}
 	c.Bind(&new_homestay)
@@ -39,4 +39,13 @@ func CreateHomestayControllers(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+}
+
+// controller untuk menampilkan seluruh data homestay
+func GetAllHomestayControllers(c echo.Context) error {
+	homestay, err := databases.GetAllHomestay()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData(homestay))
 }

@@ -11,7 +11,7 @@ import (
 func New() *echo.Echo {
 
 	e := echo.New()
-	// users
+	// route users tanpa JWT
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)
 
@@ -19,16 +19,17 @@ func New() *echo.Echo {
 	j := e.Group("/jwt")
 	j.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
-	// users
+	// route users dengan JWT
 	j.GET("/users/:id", controllers.GetUserControllers)
 	j.PUT("/users/:id", controllers.UpdateUserControllers)
 	j.DELETE("/users/:id", controllers.DeleteUserControllers)
 
-	// homestay
+	// route homestay dengan JWT
 	j.POST("/homestay", controllers.CreateHomestayControllers)
 	j.GET("/homestay", controllers.GetAllHomestayControllers)
 	j.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
 	j.PUT("/homestay/:id", controllers.UpdateHomestayControllers)
+	j.DELETE("/homestay/:id", controllers.DeleteHomestayControllers)
 	return e
 
 }

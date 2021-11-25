@@ -104,3 +104,17 @@ func UpdateHomestayControllers(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
 }
+
+func DeleteHomestayControllers(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+	}
+	id_user_product, _ := databases.GetIDUserHomestay(id)
+	logged := middlewares.ExtractTokenId(c)
+	if uint(logged) != id_user_product {
+		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
+	}
+	databases.DeleteHomestay(id)
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+}

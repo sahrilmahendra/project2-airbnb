@@ -56,3 +56,14 @@ func GetIDUserHomestay(id int) (uint, error) {
 	}
 	return homestay.UsersID, nil
 }
+
+func DeleteHomestay(id int) (interface{}, error) {
+	var homestay models.Homestay
+	check_homestay := config.DB.Find(&homestay, id).RowsAffected
+
+	err := config.DB.Delete(&homestay).Error
+	if err != nil || check_homestay > 0 {
+		return nil, err
+	}
+	return homestay.UsersID, nil
+}

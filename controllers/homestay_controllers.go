@@ -6,6 +6,7 @@ import (
 	"project2/middlewares"
 	"project2/models"
 	response "project2/responses"
+	"strconv"
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
@@ -48,4 +49,17 @@ func GetAllHomestayControllers(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseData(homestay))
+}
+
+// controller untuk menampilkan data homestay by id
+func GetHomestayByIdControllers(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+	}
+	product, e := databases.GetHomestayById(id)
+	if e != nil || product == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData(product))
 }

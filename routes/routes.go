@@ -27,6 +27,7 @@ func New() *echo.Echo {
 	// homestay
 	j.POST("/homestay", controllers.CreateHomestayControllers)
 	j.GET("/homestay", controllers.GetAllHomestayControllers)
+	j.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
 	return e
 
 }

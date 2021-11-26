@@ -52,9 +52,9 @@ Berikut merupakan fitur yang terdapat dalam project ini :
 * [JWT](https://echo.labstack.com/cookbook/jwt)
 * [Assert](https://pkg.go.dev/github.com/stretchr/testify/assert)
 * [VS Code](https://code.visualstudio.com/) -->
-![VS Code](https://img.shields.io/badge/-Visual%20Studio%20Code-05122A?style=flat&logo=visual-studio-code&logoColor=007ACC)&nbsp;
-![MySQL](https://img.shields.io/badge/-MySQL-05122A?style=flat&logo=mysql&logoColor=4479A1)&nbsp;
-![Golang](https://img.shields.io/badge/-Golang-05122A?style=flat&logo=go&logoColor=4479A1)&nbsp;
+![VS Code](https://img.shields.io/badge/-Visual%20Studio%20Code-05122A?style=flat&logo=visual-studio-code&logoColor=9A9A9A)&nbsp;
+![MySQL](https://img.shields.io/badge/-MySQL-05122A?style=flat&logo=mysql&logoColor=9A9A9A)&nbsp;
+![Golang](https://img.shields.io/badge/-Golang-05122A?style=flat&logo=go&logoColor=9A9A9A)&nbsp;
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

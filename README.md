@@ -5,7 +5,7 @@
 <div align="center">
 <!--  mengarah ke repo  -->
   <a href="https://github.com/sahrilmahendra/project2-airbnb">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo.png" width="80" height="80">
   </a>
 
   <h3 align="center">Project Airbnb</h3>

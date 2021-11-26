@@ -27,12 +27,9 @@ func InitDB() {
 // auto migrate -> untuk membuat tabel otomatis jika tabel tidak terdapat pada database
 func InitMigrate() {
 	DB.AutoMigrate(&models.Users{})
-<<<<<<< HEAD
 	DB.AutoMigrate(&models.Reservation{})
-	DB.AutoMigrate(&models.Credit{})
-=======
+	DB.AutoMigrate(&models.CreditCard{})
 	DB.AutoMigrate(&models.Homestay{})
->>>>>>> develop
 }
 
 // ===============================================================//

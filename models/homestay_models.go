@@ -13,6 +13,7 @@ type Homestay struct {
 	Longitude     float64 `json:"longitude" form:"longitude"`
 	Status        string  `status:"status" form:"status"`
 	UsersID       uint
+	Reservation   []Reservation
 }
 
 type GetHomestay struct {

@@ -14,7 +14,7 @@ func New() *echo.Echo {
 	// route users tanpa JWT
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)
-	e.POST("/reservation", controllers.CreateReservationControlllers)
+	e.POST("/reservation", controllers.CreateReservationControllers)
 
 	// group JWT
 	j := e.Group("/jwt")
@@ -31,6 +31,10 @@ func New() *echo.Echo {
 	j.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
 	j.PUT("/homestay/:id", controllers.UpdateHomestayControllers)
 	j.DELETE("/homestay/:id", controllers.DeleteHomestayControllers)
+
+	// route reservation
+	j.GET("/reservation", controllers.GetReservationControllers)
+	j.POST("/reservation", controllers.CreateReservationControllers)
 	return e
 
 }

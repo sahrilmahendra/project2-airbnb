@@ -20,7 +20,7 @@ func GetGeocodeLocations(s string) (float64, float64, error) {
 
 	body, err2 := ioutil.ReadAll(response.Body)
 	if err2 != nil {
-		return 0, 0, err
+		return 0, 0, err2
 	}
 
 	var longitude float64

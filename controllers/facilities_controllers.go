@@ -67,3 +67,16 @@ func UpdateFacilityControllers(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
 }
+
+// controller untuk menghapus facility by id
+func DeleteFacilityControllers(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+	}
+	facility, e := databases.DeleteFacility(id)
+	if facility == 0 || e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+}

@@ -20,6 +20,7 @@ func New() *echo.Echo {
 	e.GET("/facility", controllers.GetAllFacilityControllers)
 	e.GET("/facility/:id", controllers.GetFacilityByIdControllers)
 	e.PUT("/facility/:id", controllers.UpdateFacilityControllers)
+	e.DELETE("/facility/:id", controllers.DeleteFacilityControllers)
 
 	// group JWT
 	j := e.Group("/jwt")

@@ -49,3 +49,14 @@ func UpdateFacility(id int, update_facility *models.Facility) (interface{}, erro
 	}
 	return facility, nil
 }
+
+// function muntuk menghapus facility by id
+func DeleteFacility(id int) (interface{}, error) {
+	var facility models.Facility
+	check_facility := config.DB.Find(&facility, id).RowsAffected
+	err := config.DB.Delete(&facility).Error
+	if err != nil || check_facility > 0 {
+		return nil, err
+	}
+	return facility, nil
+}

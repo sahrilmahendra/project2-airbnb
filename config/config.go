@@ -28,6 +28,8 @@ func InitDB() {
 func InitMigrate() {
 	DB.AutoMigrate(&models.Users{})
 	DB.AutoMigrate(&models.Homestay{})
+	DB.AutoMigrate(&models.Facility{})
+	DB.AutoMigrate(&models.Homestay_Facility{})
 }
 
 // ===============================================================//

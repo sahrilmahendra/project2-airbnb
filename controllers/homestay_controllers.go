@@ -111,9 +111,9 @@ func DeleteHomestayControllers(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
 	}
-	id_user_product, _ := databases.GetIDUserHomestay(id)
+	id_user_homestay, _ := databases.GetIDUserHomestay(id)
 	logged := middlewares.ExtractTokenId(c)
-	if uint(logged) != id_user_product {
+	if uint(logged) != id_user_homestay {
 		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
 	}
 	databases.DeleteHomestay(id)

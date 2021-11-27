@@ -90,6 +90,7 @@ func UpdateHomestayControllers(c echo.Context) error {
 		Address:       update_homestay.Address,
 	}
 	e := v.Struct(validasi_homestay)
+	var homestay_rowaffected interface{}
 	if e == nil {
 		logged := middlewares.ExtractTokenId(c)
 		update_homestay.UsersID = uint(logged)
@@ -97,9 +98,9 @@ func UpdateHomestayControllers(c echo.Context) error {
 		update_homestay.Latitude = lat
 		update_homestay.Longitude = lng
 		update_homestay.Status = "Available"
-		_, e = databases.UpdateHomestay(id, &update_homestay)
+		homestay_rowaffected, e = databases.UpdateHomestay(id, &update_homestay)
 	}
-	if e != nil {
+	if e != nil || homestay_rowaffected == 0 {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData())

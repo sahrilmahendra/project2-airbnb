@@ -5,7 +5,6 @@ import (
 	"project2/models"
 )
 
-// var get_facility_by_id models.GetFacility
 var get_facilities []models.GetFacility
 
 // function database untuk membuat data facility baru
@@ -23,4 +22,14 @@ func GetAllFacilities() (interface{}, error) {
 		return nil, query.Error
 	}
 	return get_facilities, nil
+}
+
+// function database untuk menampilkan data facility by id
+func GetFacilityById(id int) (interface{}, error) {
+	get_facility_by_id := models.GetFacility{}
+	query := config.DB.Table("facilities").Select("facilities.id, facilities.name_facility").Where("facilities.id = ?", id).Find(&get_facility_by_id)
+	if query.Error != nil || query.RowsAffected == 0 {
+		return nil, query.Error
+	}
+	return get_facility_by_id, nil
 }

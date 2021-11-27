@@ -39,7 +39,7 @@ func UpdateHomestay(id int, update_homestay *models.Homestay) (interface{}, erro
 	var homestay models.Homestay
 	query_select := config.DB.Find(&homestay, id)
 	if query_select.Error != nil || query_select.RowsAffected == 0 {
-		return nil, query_select.Error
+		return 0, query_select.Error
 	}
 	query_update := config.DB.Model(&homestay).Updates(update_homestay)
 	if query_update.Error != nil {

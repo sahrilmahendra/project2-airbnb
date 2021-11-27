@@ -37,5 +37,10 @@ func New() *echo.Echo {
 	j.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
 	j.PUT("/homestay/:id", controllers.UpdateHomestayControllers)
 	j.DELETE("/homestay/:id", controllers.DeleteHomestayControllers)
+
+	// route homestay facility dengan JWT
+	j.POST("/homestay/facilities", controllers.CreateHomestayFacilityControllers)
+	j.PUT("/homestay/facilities/:id", controllers.UpdateHomestayFacilityControllers)
+	j.DELETE("/homestay/facilities/:id", controllers.DeleteHomestayFacilityControllers)
 	return e
 }

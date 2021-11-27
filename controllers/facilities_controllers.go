@@ -24,3 +24,11 @@ func CreateFacilityControllers(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
 }
+
+func GetAllFacilityControllers(c echo.Context) error {
+	facilities, err := databases.GetAllFacilities()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData(facilities))
+}

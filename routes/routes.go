@@ -17,6 +17,7 @@ func New() *echo.Echo {
 
 	// route facility tanpa JWT
 	e.POST("/facility", controllers.CreateFacilityControllers)
+	e.GET("/facility", controllers.GetAllFacilityControllers)
 
 	// group JWT
 	j := e.Group("/jwt")

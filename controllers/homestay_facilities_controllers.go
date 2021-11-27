@@ -68,3 +68,18 @@ func UpdateHomestayFacilityControllers(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
 }
+
+// controller untuk mengapus data homestay facility by id
+func DeleteHomestayFacilityControllers(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+	}
+	id_user_homestay, _ := databases.GetIDUserHomestay(id)
+	logged := middlewares.ExtractTokenId(c)
+	if uint(logged) != id_user_homestay {
+		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
+	}
+	databases.DeleteHomestayFacility(id)
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+}

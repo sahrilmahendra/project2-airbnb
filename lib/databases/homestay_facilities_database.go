@@ -18,7 +18,7 @@ func CreateHomestayFacility(homestay_facility *models.Homestay_Facility) (interf
 	return homestay_facility, nil
 }
 
-// function database untuk memperbarui data homestayfacility by id
+// function database untuk memperbarui data homestay facility by id
 func UpdateHomestayFacility(id int, update_homestay_facility *models.Homestay_Facility) (interface{}, error) {
 	var homestay_facility models.Homestay_Facility
 	query_select := config.DB.Find(&homestay_facility, id)
@@ -30,4 +30,16 @@ func UpdateHomestayFacility(id int, update_homestay_facility *models.Homestay_Fa
 		return nil, query_update.Error
 	}
 	return homestay_facility, nil
+}
+
+// function database untuk menghapus data homestay facility by id
+func DeleteHomestayFacility(id int) (interface{}, error) {
+	var homestay_facility models.Homestay_Facility
+	check_homestay_facility := config.DB.Find(&homestay_facility, id).RowsAffected
+
+	err := config.DB.Delete(&homestay_facility).Error
+	if err != nil || check_homestay_facility > 0 {
+		return nil, err
+	}
+	return homestay_facility.ID, nil
 }

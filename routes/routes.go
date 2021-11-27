@@ -15,6 +15,9 @@ func New() *echo.Echo {
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)
 
+	// route facility tanpa JWT
+	e.POST("/facility", controllers.CreateFacilityControllers)
+
 	// group JWT
 	j := e.Group("/jwt")
 	j.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
@@ -31,5 +34,4 @@ func New() *echo.Echo {
 	j.PUT("/homestay/:id", controllers.UpdateHomestayControllers)
 	j.DELETE("/homestay/:id", controllers.DeleteHomestayControllers)
 	return e
-
 }

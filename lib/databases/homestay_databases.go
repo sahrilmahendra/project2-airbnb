@@ -5,7 +5,6 @@ import (
 	"project2/models"
 )
 
-var get_homestay_by_id models.GetHomestay
 var get_homestay []models.GetHomestay
 
 // function database untuk membuat data homestay baru
@@ -27,6 +26,7 @@ func GetAllHomestay() (interface{}, error) {
 
 // function database untuk menampilkan data homestay by id
 func GetHomestayById(id int) (interface{}, error) {
+	var get_homestay_by_id models.GetHomestay
 	query := config.DB.Table("homestays").Select("*").Where("homestays.id = ?", id).Find(&get_homestay_by_id)
 	if query.Error != nil || query.RowsAffected == 0 {
 		return nil, query.Error

@@ -47,3 +47,23 @@ func GetFacilityByIdControllers(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseData(facility))
 }
+
+// controller untuk memperbarui facility by id
+func UpdateFacilityControllers(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+	}
+	update_facility := models.Facility{}
+	c.Bind(&update_facility)
+	v := validator.New()
+	e := v.Var(update_facility.Name_Facility, "required")
+	var facility_rowaffected interface{}
+	if e == nil {
+		facility_rowaffected, e = databases.UpdateFacility(id, &update_facility)
+	}
+	if e != nil || facility_rowaffected == 0 {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+}

@@ -19,6 +19,7 @@ func New() *echo.Echo {
 	e.POST("/facility", controllers.CreateFacilityControllers)
 	e.GET("/facility", controllers.GetAllFacilityControllers)
 	e.GET("/facility/:id", controllers.GetFacilityByIdControllers)
+	e.PUT("/facility/:id", controllers.UpdateFacilityControllers)
 
 	// group JWT
 	j := e.Group("/jwt")

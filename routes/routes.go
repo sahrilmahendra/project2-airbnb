@@ -40,5 +40,6 @@ func New() *echo.Echo {
 
 	// route homestay facility dengan JWT
 	j.POST("/homestay/addfacility", controllers.CreateHomestayFacilityControllers)
+	j.PUT("/homestay/addfacility/:id", controllers.UpdateHomestayFacilityControllers)
 	return e
 }

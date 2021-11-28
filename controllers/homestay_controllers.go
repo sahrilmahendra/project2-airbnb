@@ -62,11 +62,11 @@ func GetHomestayByIdControllers(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
 	}
-	product, e := databases.GetHomestayById(id)
-	if e != nil || product == nil {
+	homestay, e := databases.GetHomestayById(id)
+	if e != nil || homestay == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(product))
+	return c.JSON(http.StatusOK, response.SuccessResponseData(homestay))
 }
 
 // controller untuk memperbarui homestay by id
@@ -90,6 +90,7 @@ func UpdateHomestayControllers(c echo.Context) error {
 		Address:       update_homestay.Address,
 	}
 	e := v.Struct(validasi_homestay)
+	var homestay_rowaffected interface{}
 	if e == nil {
 		logged := middlewares.ExtractTokenId(c)
 		update_homestay.UsersID = uint(logged)
@@ -97,9 +98,9 @@ func UpdateHomestayControllers(c echo.Context) error {
 		update_homestay.Latitude = lat
 		update_homestay.Longitude = lng
 		update_homestay.Status = "Available"
-		_, e = databases.UpdateHomestay(id, &update_homestay)
+		homestay_rowaffected, e = databases.UpdateHomestay(id, &update_homestay)
 	}
-	if e != nil {
+	if e != nil || homestay_rowaffected == 0 {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
@@ -110,9 +111,9 @@ func DeleteHomestayControllers(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
 	}
-	id_user_product, _ := databases.GetIDUserHomestay(id)
+	id_user_homestay, _ := databases.GetIDUserHomestay(id)
 	logged := middlewares.ExtractTokenId(c)
-	if uint(logged) != id_user_product {
+	if uint(logged) != id_user_homestay {
 		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
 	}
 	databases.DeleteHomestay(id)

@@ -30,6 +30,8 @@ func InitMigrate() {
 	DB.AutoMigrate(&models.Reservation{})
 	DB.AutoMigrate(&models.CreditCard{})
 	DB.AutoMigrate(&models.Homestay{})
+	DB.AutoMigrate(&models.Facility{})
+	DB.AutoMigrate(&models.Homestay_Facility{})
 }
 
 // ===============================================================//

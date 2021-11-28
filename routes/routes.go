@@ -35,6 +35,7 @@ func New() *echo.Echo {
 	// route reservation
 	j.GET("/reservation", controllers.GetReservationControllers)
 	j.POST("/reservation", controllers.CreateReservationControllers)
+	j.POST("/reservation/check", controllers.CekReservationControllers)
 	return e
 
 }

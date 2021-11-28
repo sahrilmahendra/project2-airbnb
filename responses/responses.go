@@ -70,10 +70,10 @@ func LoginSuccessResponse(data interface{}) map[string]interface{} {
 }
 
 // function response available homestay
-func AvailableResponse() map[string]interface{} {
+func AvailableResponse(data interface{}) map[string]interface{} {
 	result := map[string]interface{}{
 		"Code":    http.StatusOK,
-		"Message": "Available",
+		"Message": data,
 	}
 	return result
 }

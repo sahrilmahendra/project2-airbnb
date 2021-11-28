@@ -1,8 +1,6 @@
 package databases
 
 import (
-	"fmt"
-	"log"
 	"project2/config"
 	"project2/models"
 	"time"
@@ -43,7 +41,6 @@ func GetPriceIDuserHomestay(id, day int) (int, uint, error) {
 	if err.Error != nil {
 		return 0, 0, err.Error
 	}
-	log.Println("harga", homestay.Price)
 	return homestay.Price * day, homestay.UsersID, nil
 }
 
@@ -58,7 +55,6 @@ func GetReservation(id int) (interface{}, error) {
 	if query_homestay.Error != nil {
 		return nil, query_homestay.Error
 	}
-	log.Println("gethomestay :", get_reservation[0].Start_date)
 	return get_reservation, nil
 
 }
@@ -68,16 +64,16 @@ func CekStatusReservation(id_home uint, cek_in, cek_out string) (interface{}, er
 	var hasil string
 
 	if CekTimeBefore(cek_in, cek_out) == true {
-
 		err := config.DB.Table("reservations").Select("*").Where("reservations.homestay_id = ?", id_home).Find(&cek)
-		if err.Error != nil || err.RowsAffected == 0 {
+		if err.Error != nil {
 			return 0, err.Error
+		} else if err.RowsAffected == 0 {
+			return 1, nil
 		}
-		fmt.Println("cek row = ", err.RowsAffected)
 
 		for i, _ := range cek {
 			hasil = SearchAvailableDay(cek[i].Start_date, cek[i].End_date, cek_in, cek_out)
-			if hasil == "not available" {
+			if hasil == "Not Available" {
 				break
 			}
 		}
@@ -94,16 +90,14 @@ func SearchAvailableDay(in, out, cek_in, cek_out string) string {
 	start, _ := time.Parse(format, in)
 	end, _ := time.Parse(format, out)
 
-	hasil := "available"
+	hasil := "Available"
 	if (start.Before(cek_start) && end.After(cek_start)) || (start.Before(cek_end) && end.After(cek_end)) {
-		hasil = "not available"
+		hasil = "Not Available"
 		return hasil
 	} else if start.Equal(cek_start) || end.Equal(cek_start) || start.Equal(cek_end) || end.Equal(cek_end) {
-		hasil = "not available"
+		hasil = "Not Available"
 		return hasil
 	}
-
-	fmt.Println("hasil", hasil)
 	return hasil
 }
 

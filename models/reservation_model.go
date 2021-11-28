@@ -10,7 +10,6 @@ type Reservation struct {
 	HomestayID  uint   `json:"homestay_id" form:"homestay_id"`
 	Start_date  string `json:"start_date" form:"start_date"`
 	End_date    string `json:"end_date" form:"end_date"`
-	Status      string
 	Total_harga int
 	Credit      CreditCard
 }
@@ -30,11 +29,6 @@ type ReservationRequest struct {
 	Credit      CreditCard  `json:"credit_card" `
 }
 
-// type GetHomestayJoin struct {
-// 	Name_Homestay string
-// 	Price         int
-// }
-
 type GetReserv struct {
 	UsersID       uint
 	HomestayID    uint
@@ -50,23 +44,3 @@ type CekStatus struct {
 	Start_date string `json:"start_date" form:"start_date"`
 	End_date   string `json:"end_date" form:"end_date"`
 }
-
-// type ReservationReq struct {
-// 	Homestay_id uint
-// 	Start_date  string
-// 	End_date    string
-// }
-
-// type CreditReq struct {
-// 	Typ    string
-// 	Name   string
-// 	Number string
-// 	Cvv    int
-// 	Month  int
-// 	Year   int
-// }
-
-// type CreateReservation struct {
-// 	Reservation ReservationReq
-// 	Credit      CreditReq
-// }

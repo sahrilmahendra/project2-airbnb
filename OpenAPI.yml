@@ -1,0 +1,780 @@
+openapi: '3.0.3'
+info:
+  title: 'Project#2 Alta-BE4: Airbnb App'
+  version: '1.0'
+  description: 'OpenAPI for Airbnb App'
+  contact: 
+    name: Moch. Syahryil Mahendra
+    email: nurilhuda7337@gmail.com
+    url: https://github.com/sahrilmahendra
+servers:
+  - url: https://{environment}.server.test/api/v1
+    description: Airbnb App servers
+    variables:
+      environment:
+        default: dev
+        enum: [
+          dev,
+          prod
+        ]
+externalDocs: 
+  description: "Repository Github Project#2 Airbnb App"
+  url: https://github.com/sahrilmahendra/project2-airbnb
+paths:
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: Get access to account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: nurilhuda7337@gmail.com
+                password:
+                  type: string
+                  example: 12345
+            example:
+              email: supriadi15001@gmail.com
+              password: qwerty
+      responses: 
+        '200':
+          description: Login Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Login Success
+                  Data:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgxOTUwMDksInVzZXJJZCI6MX0.0gso_gffYqaDGmCTqYClvhaNZZdbe7FbV7hJ02lOpoQ
+        '400':
+          description: Login Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Login Failed      
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create a new account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Moch. Syahryil Mahendra
+                email:
+                  type: string
+                  example: sahrilmahendra@gmail.com
+                password:
+                  type: string
+                  example: qwerty
+            example:
+              name: Supriadi
+              email: supriadi15001@gmail.com
+              password: qwerty
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by id
+      parameters:
+        - name: id
+          in: path
+          required: true 
+          schema:
+            type: number
+            example: 1 
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Data:
+                    type: object
+                    properties:
+                      ID:
+                        type: number
+                        example: 2
+                      Name:
+                        type: string
+                        example: Nuril Huda
+                      Email:
+                        type: string
+                        example: nurilhuda7337@gmail.com
+                  Message:
+                    type: string
+                    example: Successfull Operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request 
+        '415':
+          description: False Param
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 415
+                  Message:
+                    type: string
+                    example: False Param
+    put:
+      tags:
+        - Users
+      summary: Update user by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:  
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Sahril Mahendra
+                email:
+                  type: string
+                  example: m.sahril@gmail.com
+                password:
+                  type: string
+                  example: newqwerty
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+              example:
+                Code: 200
+                Message: Successful operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+        '403':
+          description: Access Forbidden 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Access Forbidden 
+    delete:
+      tags:
+        - Users
+      summary: Delete user by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            default: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+              example:
+                Code: 200
+                Message: Successful operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+        '403':
+          description: Access Forbidden 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 403
+                  Message:
+                    type: string
+                    example: Access Forbidden 
+  /homestay:
+    post:
+      tags:
+        - Homestay
+      summary: Create a new homestay
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name_homestay:
+                  type: string
+                  example: Rumah Jendela
+                price:
+                  type: number
+                  example: 1370523
+                description:
+                  type: string
+                  example: We serve the best our place for your satisfaction
+                address:
+                  type: string
+                  example: Dago Atas, Bandung
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+    get:
+      summary: Get all homestays
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+                    name_homestay:
+                      type: string
+                      example: Rumah Jendela
+                    price:
+                      type: number
+                      example: 1370523
+                    description:
+                      type: string
+                      example: Free Parking, Wi-Fi
+                    address:
+                      type: string
+                      example: Dago Atas, Bandung
+                    latitude:
+                      type: number
+                      example: -6.877258
+                    longitude:
+                      type: number
+                      example: 107.617412
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request 
+  /homestay/{id}:
+    get:
+      summary: Get homestay by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 1
+                  name_homestay:
+                    type: string
+                    example: Rumah Jendela
+                  price:
+                    type: number
+                    example: 1370523
+                  description:
+                    type: string
+                    example: Free Parking, Wi-Fi
+                  address:
+                    type: string
+                    example: Dago Atas, Bandung
+                  latitude:
+                    type: number
+                    example: -6.877258
+                  longitude:
+                    type: number
+                    example: 107.617412
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+    put:
+      summary: Update homestay by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:  
+              type: object
+              properties:
+                name_homestay:
+                  type: string
+                  example: Rumah Kaca
+                price:
+                  type: number
+                  example: 1200000
+                description:
+                  type: string
+                  example: Swimming Pool, Exclusive Workspace, Wi-Fi
+                address:
+                  type: string
+                  example: Lembang, Bandung
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+              example:
+                Code: 200
+                Message: Successful operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+              example:
+                Code: 400
+                Message: Bad Request
+        '403':
+          description: Access Forbidden 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 403
+                  Message:
+                    type: string
+                    example: Access Forbidden       
+    delete:
+      summary: Delete homestay by id
+      parameters:
+        - name: id
+          in: path
+          required: true 
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+              example:
+                Code: 400
+                Message: Bad Request
+        '403':
+          description: Access Forbidden 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 403
+                  Message:
+                    type: string
+                    example: Access Forbidden
+  /homestay/facilities:
+    post:
+      summary: Create a homestay facility
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                homestay_id:
+                  type: number
+                  example: 1
+                facility_id:
+                  type: number
+                  example: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+  /homestay/facilities/{id}:
+    put:
+      summary: Update homestay by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            example: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:  
+              type: object
+              properties:
+                name_homestay:
+                  type: string
+                  example: Rumah Kaca
+                price:
+                  type: number
+                  example: 1200000
+                description:
+                  type: string
+                  example: Swimming Pool, Exclusive Workspace, Wi-Fi
+                address:
+                  type: string
+                  example: Lembang, Bandung
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+              example:
+                Code: 200
+                Message: Successful operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+              example:
+                Code: 400
+                Message: Bad Request
+        '403':
+          description: Access Forbidden 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 403
+                  Message:
+                    type: string
+                    example: Access Forbidden       
+    delete:
+      summary: Delete homestay by id
+      parameters:
+        - name: id
+          in: path
+          required: true 
+          schema:
+            type: number
+            example: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
+              example:
+                Code: 400
+                Message: Bad Request
+        '403':
+          description: Access Forbidden 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 403
+                  Message:
+                    type: string
+                    example: Access Forbidden
+  /reservations/check:
+    post:
+      summary: Create a new reservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+      responses:
+  /reservations:
+    post:
+      summary: Create a new reservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+      responses:
+    get:
+      summary: Get all reservation
+      responses:

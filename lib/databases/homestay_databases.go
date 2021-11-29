@@ -17,7 +17,7 @@ func CreateHomestay(homestay *models.Homestay) (interface{}, error) {
 
 // function database untuk menampilkan seluruh data homestay
 func GetAllHomestay() (interface{}, error) {
-	query := config.DB.Table("homestays").Select("*").Find(&get_homestay)
+	query := config.DB.Table("homestays").Select("*").Where("homestays.deleted_at IS NULL").Find(&get_homestay)
 	if query.Error != nil || query.RowsAffected == 0 {
 		return nil, query.Error
 	}
@@ -27,7 +27,7 @@ func GetAllHomestay() (interface{}, error) {
 // function database untuk menampilkan data homestay by id
 func GetHomestayById(id int) (interface{}, error) {
 	var get_homestay_by_id models.GetHomestay
-	query := config.DB.Table("homestays").Select("*").Where("homestays.id = ?", id).Find(&get_homestay_by_id)
+	query := config.DB.Table("homestays").Select("*").Where("homestays.deleted_at IS NULL AND homestays.id = ?", id).Find(&get_homestay_by_id)
 	if query.Error != nil || query.RowsAffected == 0 {
 		return nil, query.Error
 	}

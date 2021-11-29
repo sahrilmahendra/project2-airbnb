@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"project2/lib/databases"
 	"project2/middlewares"
@@ -25,7 +24,6 @@ func CreateReservationControllers(c echo.Context) error {
 	// cek status reservasi
 	data, er := databases.CekStatusReservation(homestay_id, start, end)
 	if er != nil || data == "Not Available" || data == 0 {
-		fmt.Println("masuk yang ini")
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	} else {
 
@@ -41,7 +39,6 @@ func CreateReservationControllers(c echo.Context) error {
 		Reservation.Reservation.Total_harga = price
 		_, err := databases.CreateReservation(&Reservation)
 		if err != nil {
-			fmt.Println("masuk yang ini 3")
 			return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 		}
 
@@ -55,11 +52,11 @@ func CekReservationControllers(c echo.Context) error {
 
 	_, err := databases.GetHomestayById(int(cek.HomestayID))
 	data, er := databases.CekStatusReservation(cek.HomestayID, cek.Start_date, cek.End_date)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
-	}
+	// if err != nil {
+	// 	return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	// }
 
-	if er != nil || data == 0 {
+	if er != nil || data == 0 || err != nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
 	return c.JSON(http.StatusOK, response.AvailableResponse(data))

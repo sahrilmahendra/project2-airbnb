@@ -61,10 +61,8 @@ func CekStatusReservation(id_home uint, cek_in, cek_out string) (interface{}, er
 
 	if CekTimeBefore(cek_in, cek_out) == true {
 		err := config.DB.Table("reservations").Select("*").Where("reservations.homestay_id = ?", id_home).Find(&cek)
-		if err.Error != nil {
+		if err.Error != nil || err.RowsAffected == 0 {
 			return 0, err.Error
-		} else if err.RowsAffected == 0 {
-			return 1, nil
 		}
 
 		for i, _ := range cek {

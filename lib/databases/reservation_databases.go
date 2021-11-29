@@ -47,12 +47,8 @@ func GetPriceIDuserHomestay(id, day int) (int, uint, error) {
 func GetReservation(id int) (interface{}, error) {
 	var get_reservation []models.GetReserv
 
-	query := config.DB.Table("reservations").Select("*").Where("reservations.users_id = ?", id).Find(&get_reservation)
-	if query.Error != nil || query.RowsAffected == 0 {
-		return nil, query.Error
-	}
-	query_homestay := config.DB.Table("homestays").Select("reservations.users_id,reservations.homestay_id,homestays.name_homestay,reservations.start_date,reservations.end_date,homestays.price,reservations.total_harga").Joins("join reservations on homestays.id = reservations.homestay_id").Find(&get_reservation)
-	if query_homestay.Error != nil {
+	query_homestay := config.DB.Table("homestays").Select("reservations.users_id,reservations.homestay_id,homestays.name_homestay,reservations.start_date,reservations.end_date,homestays.price,reservations.total_harga").Joins("join reservations on homestays.id = reservations.homestay_id").Where("reservations.users_id = ?", id).Find(&get_reservation)
+	if query_homestay.Error != nil || query_homestay.RowsAffected == 0 {
 		return nil, query_homestay.Error
 	}
 	return get_reservation, nil
@@ -84,7 +80,6 @@ func CekStatusReservation(id_home uint, cek_in, cek_out string) (interface{}, er
 
 func SearchAvailableDay(in, out, cek_in, cek_out string) string {
 	format := "2006-01-02"
-
 	cek_start, _ := time.Parse(format, cek_in)
 	cek_end, _ := time.Parse(format, cek_out)
 	start, _ := time.Parse(format, in)

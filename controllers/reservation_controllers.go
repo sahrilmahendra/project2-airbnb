@@ -66,3 +66,8 @@ func GetReservationControllers(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseData(data))
 }
+
+//untuk kebutuhan testing get reservation
+func GetReservationControllersTesting() echo.HandlerFunc {
+	return GetReservationControllers
+}

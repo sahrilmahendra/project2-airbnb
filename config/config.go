@@ -52,5 +52,7 @@ func InitDBTest() {
 // drop table -> untuk menghapus tabel terlebih dahulu agar isi datanya dimulai dari tabel kosong
 func InitMigrationTest() {
 	DB.Migrator().DropTable(&models.Users{})
+	DB.Migrator().DropTable(&models.Reservation{})
 	DB.AutoMigrate(&models.Users{})
+	DB.AutoMigrate(&models.Reservation{})
 }

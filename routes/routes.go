@@ -14,6 +14,8 @@ func New() *echo.Echo {
 	// route users tanpa JWT
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)
+	e.GET("/users/:id", controllers.GetUserControllers)
+	e.GET("/users", controllers.GetAllUsersControllers)
 
 	// route facility tanpa JWT
 	e.POST("/facility", controllers.CreateFacilityControllers)
@@ -27,7 +29,6 @@ func New() *echo.Echo {
 	j.Use(middleware.JWT([]byte(constants.SECRET_JWT)))
 
 	// route users dengan JWT
-	j.GET("/users/:id", controllers.GetUserControllers)
 	j.PUT("/users/:id", controllers.UpdateUserControllers)
 	j.DELETE("/users/:id", controllers.DeleteUserControllers)
 

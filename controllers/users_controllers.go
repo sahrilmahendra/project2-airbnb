@@ -21,6 +21,15 @@ type ValidatorUser struct {
 	Password string `validate:"required"`
 }
 
+// controller untuk menampilkan seluruh data users
+func GetAllUsersControllers(c echo.Context) error {
+	users, err := databases.GetAllUsers()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData(users))
+}
+
 // controller untuk menampilkan data user by id
 func GetUserControllers(c echo.Context) error {
 	id := c.Param("id")

@@ -11,7 +11,6 @@ type Homestay struct {
 	Address             string  `json:"address" form:"address"`
 	Latitude            float64 `json:"latitude" form:"latitude"`
 	Longitude           float64 `json:"longitude" form:"longitude"`
-	Status              string  `status:"status" form:"status"`
 	UsersID             uint
 	Homestay_Facilities []Homestay_Facility
 }

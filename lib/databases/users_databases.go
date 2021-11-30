@@ -10,6 +10,16 @@ import (
 
 var user models.Users
 
+// function database untuk menampilkan seluruh data users
+func GetAllUsers() (interface{}, error) {
+	var users []models.GetUser
+	query := config.DB.Table("users").Select("*").Find(&users)
+	if query.Error != nil || query.RowsAffected == 0 {
+		return nil, query.Error
+	}
+	return users, nil
+}
+
 // function database untuk menampilkan user by id
 func GetUserById(id int) (interface{}, error) {
 	users := models.Users{}

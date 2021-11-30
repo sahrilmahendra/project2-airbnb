@@ -38,7 +38,6 @@ func CreateHomestayControllers(c echo.Context) error {
 		lat, lng, _ := helper.GetGeocodeLocations(new_homestay.Address)
 		new_homestay.Latitude = lat
 		new_homestay.Longitude = lng
-		new_homestay.Status = "Available"
 		_, err = databases.CreateHomestay(&new_homestay)
 	}
 	if err != nil {
@@ -97,7 +96,6 @@ func UpdateHomestayControllers(c echo.Context) error {
 		lat, lng, _ := helper.GetGeocodeLocations(update_homestay.Address)
 		update_homestay.Latitude = lat
 		update_homestay.Longitude = lng
-		update_homestay.Status = "Available"
 		homestay_rowaffected, e = databases.UpdateHomestay(id, &update_homestay)
 	}
 	if e != nil || homestay_rowaffected == 0 {

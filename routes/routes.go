@@ -17,6 +17,10 @@ func New() *echo.Echo {
 	e.GET("/users/:id", controllers.GetUserControllers)
 	e.GET("/users", controllers.GetAllUsersControllers)
 
+	// route homestay tanpa JWT
+	e.GET("/homestay", controllers.GetAllHomestayControllers)
+	e.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
+
 	// route facility tanpa JWT
 	e.POST("/facility", controllers.CreateFacilityControllers)
 	e.GET("/facility", controllers.GetAllFacilityControllers)
@@ -34,8 +38,6 @@ func New() *echo.Echo {
 
 	// route homestay dengan JWT
 	j.POST("/homestay", controllers.CreateHomestayControllers)
-	j.GET("/homestay", controllers.GetAllHomestayControllers)
-	j.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
 	j.PUT("/homestay/:id", controllers.UpdateHomestayControllers)
 	j.DELETE("/homestay/:id", controllers.DeleteHomestayControllers)
 

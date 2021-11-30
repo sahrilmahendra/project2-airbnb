@@ -22,4 +22,4 @@ jobs:
           docker stop project2-airbnb
           docker rm project2-airbnb
           docker build -t alta-be4-app:latest .
-          docker run -d -e "CONNECTION_DB=admin:admin123@tcp(dbaws123.clegay8avjzl.ap-southeast-1.rds.amazonaws.com:3306)/project_2?charset=utf8&parseTime=True&loc=Local GOOGLE_API_KEY=AIzaSyDVzOsxD_6zAX2dG6jqLFjBBw3jh9lGLbI" -p 80:8080 --name project2-airbnb alta-be4-app:latest
+          docker run -d -e "CONNECTION_DB=admin:admin123@tcp(dbaws123.clegay8avjzl.ap-southeast-1.rds.amazonaws.com:3306)/project_2?charset=utf8&parseTime=True&loc=Local" -p 80:8080 --name project2-airbnb alta-be4-app:latest

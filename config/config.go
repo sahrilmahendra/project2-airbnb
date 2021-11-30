@@ -27,6 +27,11 @@ func InitDB() {
 // auto migrate -> untuk membuat tabel otomatis jika tabel tidak terdapat pada database
 func InitMigrate() {
 	DB.AutoMigrate(&models.Users{})
+	DB.AutoMigrate(&models.Reservation{})
+	DB.AutoMigrate(&models.CreditCard{})
+	DB.AutoMigrate(&models.Homestay{})
+	DB.AutoMigrate(&models.Facility{})
+	DB.AutoMigrate(&models.Homestay_Facility{})
 }
 
 // ===============================================================//
@@ -47,5 +52,7 @@ func InitDBTest() {
 // drop table -> untuk menghapus tabel terlebih dahulu agar isi datanya dimulai dari tabel kosong
 func InitMigrationTest() {
 	DB.Migrator().DropTable(&models.Users{})
+	DB.Migrator().DropTable(&models.Reservation{})
 	DB.AutoMigrate(&models.Users{})
+	DB.AutoMigrate(&models.Reservation{})
 }

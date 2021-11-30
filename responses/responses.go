@@ -7,8 +7,8 @@ import (
 // function response false param
 func FalseParamResponse() map[string]interface{} {
 	result := map[string]interface{}{
-		"code":    http.StatusBadRequest,
-		"message": "False Param",
+		"Code":    http.StatusBadRequest,
+		"Message": "False Param",
 	}
 	return result
 }
@@ -16,8 +16,8 @@ func FalseParamResponse() map[string]interface{} {
 // function response bad request
 func BadRequestResponse() map[string]interface{} {
 	result := map[string]interface{}{
-		"code":    http.StatusBadRequest,
-		"message": "Bad Request",
+		"Code":    http.StatusBadRequest,
+		"Message": "Bad Request",
 	}
 	return result
 }
@@ -25,8 +25,8 @@ func BadRequestResponse() map[string]interface{} {
 // function response access forbidden
 func AccessForbiddenResponse() map[string]interface{} {
 	result := map[string]interface{}{
-		"code":    http.StatusBadRequest,
-		"message": "Access Forbidden",
+		"Code":    http.StatusBadRequest,
+		"Message": "Access Forbidden",
 	}
 	return result
 }
@@ -34,9 +34,9 @@ func AccessForbiddenResponse() map[string]interface{} {
 // function response success dengan paramater
 func SuccessResponseData(data interface{}) map[string]interface{} {
 	result := map[string]interface{}{
-		"code":    http.StatusOK,
-		"message": "Successful Operation",
-		"data":    data,
+		"Code":    http.StatusOK,
+		"Message": "Successful Operation",
+		"Data":    data,
 	}
 	return result
 }
@@ -44,8 +44,8 @@ func SuccessResponseData(data interface{}) map[string]interface{} {
 // function response success tanpa parameter
 func SuccessResponseNonData() map[string]interface{} {
 	result := map[string]interface{}{
-		"code":    http.StatusOK,
-		"message": "Successful Operation",
+		"Code":    http.StatusOK,
+		"Message": "Successful Operation",
 	}
 	return result
 }
@@ -53,8 +53,8 @@ func SuccessResponseNonData() map[string]interface{} {
 // function response login failure
 func LoginFailedResponse() map[string]interface{} {
 	result := map[string]interface{}{
-		"code":    http.StatusBadRequest,
-		"message": "Login Failed",
+		"Code":    http.StatusBadRequest,
+		"Message": "Login Failed",
 	}
 	return result
 }
@@ -62,9 +62,18 @@ func LoginFailedResponse() map[string]interface{} {
 // function response login success
 func LoginSuccessResponse(data interface{}) map[string]interface{} {
 	result := map[string]interface{}{
-		"code":    http.StatusOK,
-		"message": "Login Success",
-		"data":    data,
+		"Code":    http.StatusOK,
+		"Message": "Login Success",
+		"Data":    data,
+	}
+	return result
+}
+
+// function response available homestay
+func AvailableResponse(data interface{}) map[string]interface{} {
+	result := map[string]interface{}{
+		"Code":    http.StatusOK,
+		"Message": data,
 	}
 	return result
 }

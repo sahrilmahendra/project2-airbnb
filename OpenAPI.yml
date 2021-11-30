@@ -329,7 +329,7 @@ paths:
                   example: Rumah Jendela
                 price:
                   type: number
-                  example: 1370523
+                  example: 1300000
                 description:
                   type: string
                   example: We serve the best our place for your satisfaction
@@ -364,6 +364,8 @@ paths:
                     type: string
                     example: Bad Request
     get:
+      tags:
+      - Homestay
       summary: Get all homestays
       responses:
         '200':
@@ -375,27 +377,36 @@ paths:
                 items:
                   type: object
                   properties:
-                    id:
+                    Code:
                       type: number
-                      example: 1
-                    name_homestay:
+                      example: 200
+                    Data:
+                      type: object
+                      properties:
+                        ID:
+                          type: number
+                          example: 1
+                        Name_Homestay:
+                          type: string
+                          example: Rumah Jendela
+                        Price:
+                          type: number
+                          example: 1300000
+                        Description:
+                          type: string
+                          example: We serve the best our place for your satisfaction
+                        Address:
+                          type: string
+                          example: Dago, Bandung
+                        Latitude:
+                          type: number
+                          example: -6.877258
+                        Longitude:
+                          type: number
+                          example: 107.617412
+                    Message:
                       type: string
-                      example: Rumah Jendela
-                    price:
-                      type: number
-                      example: 1370523
-                    description:
-                      type: string
-                      example: Free Parking, Wi-Fi
-                    address:
-                      type: string
-                      example: Dago Atas, Bandung
-                    latitude:
-                      type: number
-                      example: -6.877258
-                    longitude:
-                      type: number
-                      example: 107.617412
+                      example: Succesful Operation      
         '400':
           description: Bad Request
           content:
@@ -411,6 +422,8 @@ paths:
                     example: Bad Request 
   /homestay/{id}:
     get:
+      tags:
+        - Homestay
       summary: Get homestay by id
       parameters:
         - name: id
@@ -427,27 +440,36 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
+                  Code:
                     type: number
-                    example: 1
-                  name_homestay:
+                    example: 200
+                  Data:
+                    type: object
+                    properties:
+                      ID:
+                        type: number
+                        example: 1
+                      Name_Homestay:
+                        type: string
+                        example: Rumah Jendela
+                      Price:
+                        type: number
+                        example: 1370523
+                      Description:
+                        type: string
+                        example: We serve the best our place for your satisfaction
+                      Address:
+                        type: string
+                        example: Dago, Bandung
+                      Latitude:
+                        type: number
+                        example: -6.877258
+                      Longitude:
+                        type: number
+                        example: 107.617412
+                  Message:
                     type: string
-                    example: Rumah Jendela
-                  price:
-                    type: number
-                    example: 1370523
-                  description:
-                    type: string
-                    example: Free Parking, Wi-Fi
-                  address:
-                    type: string
-                    example: Dago Atas, Bandung
-                  latitude:
-                    type: number
-                    example: -6.877258
-                  longitude:
-                    type: number
-                    example: 107.617412
+                    example: Succesful Operation
         '400':
           description: Bad Request
           content:
@@ -461,7 +483,22 @@ paths:
                   Message:
                     type: string
                     example: Bad Request
+        '415':
+          description: False Param
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 415
+                  Message:
+                    type: string
+                    example: False Param
     put:
+      tags:
+        - Homestay
       summary: Update homestay by id
       parameters:
         - name: id
@@ -485,7 +522,7 @@ paths:
                   example: 1200000
                 description:
                   type: string
-                  example: Swimming Pool, Exclusive Workspace, Wi-Fi
+                  example: Fresh and cool
                 address:
                   type: string
                   example: Lembang, Bandung
@@ -503,9 +540,6 @@ paths:
                   Message:
                     type: string
                     example: Successful Operation
-              example:
-                Code: 200
-                Message: Successful operation
         '400':
           description: Bad Request
           content:
@@ -519,9 +553,6 @@ paths:
                   Message:
                     type: string
                     example: Bad Request
-              example:
-                Code: 400
-                Message: Bad Request
         '403':
           description: Access Forbidden 
           content:
@@ -534,8 +565,23 @@ paths:
                     example: 403
                   Message:
                     type: string
-                    example: Access Forbidden       
+                    example: Access Forbidden
+        '415':
+          description: False Param
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 415
+                  Message:
+                    type: string
+                    example: False Param
     delete:
+      tags:
+      - Homestay
       summary: Delete homestay by id
       parameters:
         - name: id
@@ -559,7 +605,7 @@ paths:
                     type: string
                     example: Successful Operation
         '400':
-          description: Bad Request
+          description: False Param
           content:
             application/json:
               schema:
@@ -570,10 +616,7 @@ paths:
                     example: 400
                   Message:
                     type: string
-                    example: Bad Request
-              example:
-                Code: 400
-                Message: Bad Request
+                    example: False Param
         '403':
           description: Access Forbidden 
           content:
@@ -589,6 +632,8 @@ paths:
                     example: Access Forbidden
   /homestay/facilities:
     post:
+      tags:
+      - Homestay Facilities
       summary: Create a homestay facility
       requestBody:
         required: true
@@ -632,7 +677,9 @@ paths:
                     example: Bad Request
   /homestay/facilities/{id}:
     put:
-      summary: Update homestay by id
+      tags:
+      - Homestay Facilities
+      summary: Update homestay facility by id
       parameters:
         - name: id
           in: path
@@ -647,18 +694,12 @@ paths:
             schema:  
               type: object
               properties:
-                name_homestay:
-                  type: string
-                  example: Rumah Kaca
-                price:
+                homestay_id:
                   type: number
-                  example: 1200000
-                description:
-                  type: string
-                  example: Swimming Pool, Exclusive Workspace, Wi-Fi
-                address:
-                  type: string
-                  example: Lembang, Bandung
+                  example: 2
+                facility_id:
+                  type: number
+                  example: 2
       responses:
         '200':
           description: Successful operation
@@ -673,9 +714,6 @@ paths:
                   Message:
                     type: string
                     example: Successful Operation
-              example:
-                Code: 200
-                Message: Successful operation
         '400':
           description: Bad Request
           content:
@@ -689,11 +727,8 @@ paths:
                   Message:
                     type: string
                     example: Bad Request
-              example:
-                Code: 400
-                Message: Bad Request
-        '403':
-          description: Access Forbidden 
+        '415':
+          description: False Param 
           content:
             application/json:
               schema:
@@ -701,12 +736,14 @@ paths:
                 properties:
                   Code:
                     type: number
-                    example: 403
+                    example: 415
                   Message:
                     type: string
-                    example: Access Forbidden       
+                    example: False Param       
     delete:
-      summary: Delete homestay by id
+      tags:
+        - Homestay Facilities
+      summary: Delete homestay facility by id
       parameters:
         - name: id
           in: path
@@ -729,7 +766,7 @@ paths:
                     type: string
                     example: Successful Operation
         '400':
-          description: Bad Request
+          description: False Param
           content:
             application/json:
               schema:
@@ -740,10 +777,7 @@ paths:
                     example: 400
                   Message:
                     type: string
-                    example: Bad Request
-              example:
-                Code: 400
-                Message: Bad Request
+                    example: False Param
         '403':
           description: Access Forbidden 
           content:
@@ -759,22 +793,175 @@ paths:
                     example: Access Forbidden
   /reservations/check:
     post:
-      summary: Create a new reservation
+      tags:
+        - Reservations
+      summary: Check. is homestay available?
       requestBody:
         required: true
         content:
           application/json:
-            schema:
+            schema:  
+              type: object
+              properties:
+                homestay_id:
+                  type: number
+                  example: 1
+                start_date:
+                  type: string
+                  example: "2021-11-30"
+                end_date:
+                  type: string
+                  example: "2021-12-01"
       responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Available
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
   /reservations:
     post:
+      tags:
+      - Reservations
       summary: Create a new reservation
       requestBody:
         required: true
         content:
           application/json:
-            schema:
+            schema:  
+              type: object
+              properties:
+                homestay_id:
+                  type: number
+                  example: 1
+                start_date:
+                  type: string
+                  example: "2021-11-30"
+                end_date:
+                  type: string
+                  example: "2021-12-01"
+                credit_card:
+                  type: object
+                  properties:
+                    typ:
+                      type: string
+                      example: Master Card
+                    name:
+                      type: string
+                      example: Supriadi
+                    number:
+                      type: string
+                      example: 1000-1000-1000-1000
+                    cvv:
+                      type: number
+                      example: 10101
+                    month:
+                      type: number
+                      example: 1
+                    year:
+                      type: number
+                      example: 21
       responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 200
+                  Message:
+                    type: string
+                    example: Successful Operation
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request
     get:
-      summary: Get all reservation
+      tags:
+      - Reservations
+      summary: Get all reservations
       responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Code:
+                      type: number
+                      example: 200
+                    Data:
+                      type: object
+                      properties:
+                        UserID:
+                          type: number
+                          example: 1
+                        HomestayID:
+                          type: number
+                          example: 1
+                        Name_Homestay:
+                          type: string
+                          example: Rumah Jendela
+                        Start_date:
+                          type: string
+                          example: "2021-11-30"
+                        End_date:
+                          type: string
+                          example: "2021-12-01"
+                        Price:
+                          type: number
+                          example: 1300000
+                        Total_harga:
+                          type: number
+                          example: 2600000
+                    Message:
+                      type: string
+                      example: Succesful Operation      
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Code:
+                    type: number
+                    example: 400
+                  Message:
+                    type: string
+                    example: Bad Request

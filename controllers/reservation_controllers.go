@@ -50,13 +50,10 @@ func CekReservationControllers(c echo.Context) error {
 	cek := models.CekStatus{}
 	c.Bind(&cek)
 
-	_, err := databases.GetHomestayById(int(cek.HomestayID))
+	v, _ := databases.GetHomestayById(int(cek.HomestayID))
 	data, er := databases.CekStatusReservation(cek.HomestayID, cek.Start_date, cek.End_date)
-	// if err != nil {
-	// 	return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
-	// }
 
-	if er != nil || data == 0 || err != nil {
+	if er != nil || data == 0 || v == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
 	}
 	return c.JSON(http.StatusOK, response.AvailableResponse(data))

@@ -7,7 +7,7 @@ import (
 type Reservation struct {
 	gorm.Model
 	UsersID     uint
-	HomestayID  uint   ` json:"homestay_id" form:"homestay_id"`
+	HomestayID  uint   `json:"homestay_id" form:"homestay_id"`
 	Start_date  string `json:"start_date" form:"start_date"`
 	End_date    string `json:"end_date" form:"end_date"`
 	Total_harga int
@@ -16,7 +16,7 @@ type Reservation struct {
 
 type CreditCard struct {
 	ReservationID uint
-	Typ           string ` json:"typ" form:"typ"`
+	Typ           string `json:"typ" form:"typ"`
 	Name          string `json:"name" form:"name"`
 	Number        string `json:"number" form:"number"`
 	Cvv           int    `json:"cvv" form:"cvv"`

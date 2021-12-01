@@ -15,17 +15,21 @@ func CreateReservationControllers(c echo.Context) error {
 
 	c.Bind(&Reservation)
 	id := middlewares.ExtractTokenId(c)
+
 	Reservation.Reservation.UsersID = uint(id)
 
 	homestay_id := Reservation.Reservation.HomestayID
 	start := Reservation.Reservation.Start_date
 	end := Reservation.Reservation.End_date
 
+	d_user, _ := databases.GetUserById(id)
+
+	v, _ := databases.GetHomestayById(int(homestay_id))
 	// cek status reservasi
-	data, er := databases.CekStatusReservation(homestay_id, start, end)
-	if er != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
-	} else if data == 0 {
+	data, _ := databases.CekStatusReservation(homestay_id, start, end)
+	if v == nil || d_user == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	} else if data == 1 {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Date"))
 	} else if data == "Not Available" {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Not Available"))
@@ -45,7 +49,6 @@ func CreateReservationControllers(c echo.Context) error {
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 		}
-
 		return c.JSON(http.StatusBadRequest, response.SuccessResponseNonData("Success Operation"))
 	}
 }
@@ -57,12 +60,12 @@ func CekReservationControllers(c echo.Context) error {
 	v, _ := databases.GetHomestayById(int(cek.HomestayID))
 	data, er := databases.CekStatusReservation(cek.HomestayID, cek.Start_date, cek.End_date)
 
-	if v == nil {
+	if er != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	} else if v == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	} else if data == 1 {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Date"))
-	} else if er != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	} else if data == 0 {
 		return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", "Available"))
 	}
@@ -73,8 +76,8 @@ func CekReservationControllers(c echo.Context) error {
 func GetReservationControllers(c echo.Context) error {
 	id := middlewares.ExtractTokenId(c)
 
-	data, e := databases.GetReservation(id)
-	if e != nil {
+	data, er := databases.GetReservation(id)
+	if er != nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	} else if data == 0 {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))

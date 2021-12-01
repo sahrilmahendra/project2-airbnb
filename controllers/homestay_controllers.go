@@ -41,43 +41,53 @@ func CreateHomestayControllers(c echo.Context) error {
 		_, err = databases.CreateHomestay(&new_homestay)
 	}
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk menampilkan seluruh data homestay
 func GetAllHomestayControllers(c echo.Context) error {
 	homestay, err := databases.GetAllHomestay()
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(homestay))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", homestay))
 }
 
 // controller untuk menampilkan data homestay by id
 func GetHomestayByIdControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
 	}
 	homestay, e := databases.GetHomestayById(id)
-	if e != nil || homestay == nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(homestay))
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", homestay))
 }
 
 // controller untuk memperbarui homestay by id
 func UpdateHomestayControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
+	}
+	homestay, _ := databases.GetHomestayById(id)
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
 	id_user_homestay, _ := databases.GetIDUserHomestay(id)
 	logged := middlewares.ExtractTokenId(c) // check token
 	if logged != int(id_user_homestay) {
-		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Access Forbidden"))
 	}
 	update_homestay := models.Homestay{}
 	c.Bind(&update_homestay)
@@ -89,31 +99,34 @@ func UpdateHomestayControllers(c echo.Context) error {
 		Address:       update_homestay.Address,
 	}
 	e := v.Struct(validasi_homestay)
-	var homestay_rowaffected interface{}
 	if e == nil {
 		logged := middlewares.ExtractTokenId(c)
 		update_homestay.UsersID = uint(logged)
 		lat, lng, _ := helper.GetGeocodeLocations(update_homestay.Address)
 		update_homestay.Latitude = lat
 		update_homestay.Longitude = lng
-		homestay_rowaffected, e = databases.UpdateHomestay(id, &update_homestay)
+		_, e = databases.UpdateHomestay(id, &update_homestay)
 	}
-	if e != nil || homestay_rowaffected == 0 {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 func DeleteHomestayControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
+	}
+	homestay, _ := databases.GetHomestayById(id)
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
 	id_user_homestay, _ := databases.GetIDUserHomestay(id)
 	logged := middlewares.ExtractTokenId(c)
 	if uint(logged) != id_user_homestay {
-		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Access Forbidden"))
 	}
 	databases.DeleteHomestay(id)
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }

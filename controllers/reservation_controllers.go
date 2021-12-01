@@ -23,8 +23,12 @@ func CreateReservationControllers(c echo.Context) error {
 
 	// cek status reservasi
 	data, er := databases.CekStatusReservation(homestay_id, start, end)
-	if er != nil || data == "Not Available" || data == 0 {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if er != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	} else if data == 0 {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Date"))
+	} else if data == "Not Available" {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Not Available"))
 	} else {
 
 		// mencari berapa hari reservasi
@@ -33,16 +37,16 @@ func CreateReservationControllers(c echo.Context) error {
 
 		//cek iduser di homestay
 		if id == int(id_user_homestay) {
-			return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+			return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Access Forbidden"))
 		}
 
 		Reservation.Reservation.Total_harga = price
 		_, err := databases.CreateReservation(&Reservation)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+			return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 		}
 
-		return c.JSON(http.StatusBadRequest, response.SuccessResponseNonData())
+		return c.JSON(http.StatusBadRequest, response.SuccessResponseNonData("Success Operation"))
 	}
 }
 
@@ -53,10 +57,16 @@ func CekReservationControllers(c echo.Context) error {
 	v, _ := databases.GetHomestayById(int(cek.HomestayID))
 	data, er := databases.CekStatusReservation(cek.HomestayID, cek.Start_date, cek.End_date)
 
-	if er != nil || data == 0 || v == nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if v == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	} else if data == 1 {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Date"))
+	} else if er != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	} else if data == 0 {
+		return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", "Available"))
 	}
-	return c.JSON(http.StatusOK, response.AvailableResponse(data))
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", data))
 
 }
 
@@ -64,10 +74,12 @@ func GetReservationControllers(c echo.Context) error {
 	id := middlewares.ExtractTokenId(c)
 
 	data, e := databases.GetReservation(id)
-	if e != nil || data == nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	} else if data == 0 {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(data))
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", data))
 }
 
 //untuk kebutuhan testing get reservation

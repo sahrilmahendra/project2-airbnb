@@ -48,8 +48,10 @@ func GetReservation(id int) (interface{}, error) {
 	var get_reservation []models.GetReserv
 
 	query_homestay := config.DB.Table("homestays").Select("reservations.users_id,reservations.homestay_id,homestays.name_homestay,reservations.start_date,reservations.end_date,homestays.price,reservations.total_harga").Joins("join reservations on homestays.id = reservations.homestay_id").Where("reservations.users_id = ?", id).Find(&get_reservation)
-	if query_homestay.Error != nil || query_homestay.RowsAffected == 0 {
+	if query_homestay.Error != nil {
 		return nil, query_homestay.Error
+	} else if query_homestay.RowsAffected == 0 {
+		return 0, nil
 	}
 	return get_reservation, nil
 
@@ -61,8 +63,10 @@ func CekStatusReservation(id_home uint, cek_in, cek_out string) (interface{}, er
 
 	if CekTimeBefore(cek_in, cek_out) == true {
 		err := config.DB.Table("reservations").Select("*").Where("reservations.homestay_id = ?", id_home).Find(&cek)
-		if err.Error != nil || err.RowsAffected == 0 {
-			return 0, err.Error
+		if err.Error != nil {
+			return nil, err.Error
+		} else if err.RowsAffected == 0 {
+			return 0, nil
 		}
 
 		for i, _ := range cek {
@@ -73,7 +77,7 @@ func CekStatusReservation(id_home uint, cek_in, cek_out string) (interface{}, er
 		}
 		return hasil, nil
 	}
-	return 0, nil
+	return 1, nil
 }
 
 func SearchAvailableDay(in, out, cek_in, cek_out string) string {

@@ -24,10 +24,13 @@ type ValidatorUser struct {
 // controller untuk menampilkan seluruh data users
 func GetAllUsersControllers(c echo.Context) error {
 	users, err := databases.GetAllUsers()
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if users == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(users))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", users))
 }
 
 // controller untuk menampilkan data user by id
@@ -36,13 +39,16 @@ func GetUserControllers(c echo.Context) error {
 	conv_id, err := strconv.Atoi(id)
 	log.Println("id", conv_id)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
 	}
 	user, e := databases.GetUserById(conv_id)
-	if e != nil || user == nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if user == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(user))
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", user))
 }
 
 // controller untuk menambahkan user (registrasi)
@@ -63,30 +69,31 @@ func CreateUserControllers(c echo.Context) error {
 	}
 	// check, _ := databases.GetUserByEmail(new_user.Email)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk menghapus user by id
 func DeleteUserControllers(c echo.Context) error {
-	id := c.Param("id")
-	conv_id, err := strconv.Atoi(id)
+	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
+	}
+
+	user, _ := databases.GetUserById(id)
+	if user == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
 
 	logged := middlewares.ExtractTokenId(c) // check token
-	if logged != conv_id {
-		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
+	if logged != id {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Access Forbidden"))
 	}
+	databases.DeleteUser(id)
 
-	_, e := databases.DeleteUser(conv_id)
-	if e != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
-	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk memperbarui data user by id (update)
@@ -94,12 +101,17 @@ func UpdateUserControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
+	}
+
+	user, _ := databases.GetUserById(id)
+	if user == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
 
 	logged := middlewares.ExtractTokenId(c) // check token
 	if logged != id {
-		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Access Forbidden"))
 	}
 	users := models.Users{}
 	c.Bind(&users)
@@ -116,9 +128,9 @@ func UpdateUserControllers(c echo.Context) error {
 		_, e = databases.UpdateUser(id, &users)
 	}
 	if e != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk login dan generate token (by email dan password)
@@ -129,9 +141,9 @@ func LoginUserControllers(c echo.Context) error {
 	log.Println(plan_pass)
 	token, e := databases.LoginUser(plan_pass, &user)
 	if e != nil {
-		return c.JSON(http.StatusBadRequest, response.LoginFailedResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Email or Password Incorrect"))
 	}
-	return c.JSON(http.StatusOK, response.LoginSuccessResponse(token))
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Login Success", token))
 }
 
 // controller untuk kebutuhan testing get user

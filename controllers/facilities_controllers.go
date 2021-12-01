@@ -21,62 +21,75 @@ func CreateFacilityControllers(c echo.Context) error {
 		_, err = databases.CreateFacility(&new_facility)
 	}
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk menampilkan seluruh data facility
 func GetAllFacilityControllers(c echo.Context) error {
 	facilities, err := databases.GetAllFacilities()
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if facilities == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(facilities))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", facilities))
 }
 
 // controller untuk menampilkan data facility by id
 func GetFacilityByIdControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
 	}
 	facility, e := databases.GetFacilityById(id)
-	if e != nil || facility == nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if facility == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseData(facility))
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", facility))
 }
 
 // controller untuk memperbarui facility by id
 func UpdateFacilityControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
+	}
+	facility, _ := databases.GetFacilityById(id)
+	if facility == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
 	update_facility := models.Facility{}
 	c.Bind(&update_facility)
 	v := validator.New()
 	e := v.Var(update_facility.Name_Facility, "required")
-	var facility_rowaffected interface{}
 	if e == nil {
-		facility_rowaffected, e = databases.UpdateFacility(id, &update_facility)
+		_, e = databases.UpdateFacility(id, &update_facility)
 	}
-	if e != nil || facility_rowaffected == 0 {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk menghapus facility by id
 func DeleteFacilityControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
 	}
-	facility, e := databases.DeleteFacility(id)
-	if facility == 0 || e != nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	facility, _ := databases.GetFacilityById(id)
+	if facility == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	_, e := databases.DeleteFacility(id)
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"net/http"
 	"project2/constants"
 	"project2/controllers"
 
@@ -11,6 +12,10 @@ import (
 func New() *echo.Echo {
 
 	e := echo.New()
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
+	}))
 	// route users tanpa JWT
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)

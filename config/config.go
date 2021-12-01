@@ -1,10 +1,12 @@
 package config
 
 import (
+	"log"
 	"os"
 
 	"project2/models"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -13,6 +15,10 @@ var DB *gorm.DB
 
 // inisialisasi database
 func InitDB() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	config := os.Getenv("CONNECTION_DB")
 
 	var e error

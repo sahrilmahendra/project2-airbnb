@@ -53,6 +53,8 @@ func InitDBTest() {
 func InitMigrationTest() {
 	DB.Migrator().DropTable(&models.Users{})
 	DB.Migrator().DropTable(&models.Reservation{})
+	DB.Migrator().DropTable(&models.CreditCard{})
 	DB.AutoMigrate(&models.Users{})
 	DB.AutoMigrate(&models.Reservation{})
+	DB.AutoMigrate(&models.CreditCard{})
 }

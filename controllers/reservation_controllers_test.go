@@ -83,12 +83,15 @@ func TestGetReservationControllersBadRequest(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/reservation", nil)
 	req.Header.Set(echo.HeaderAuthorization, fmt.Sprintf("Bearer %v", token))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	context := e.NewContext(req, rec)
 	context.SetPath(testCases.path)
+
+	context.SetParamNames("id")
+	context.SetParamValues("1")
 	middleware.JWT([]byte(constants.SECRET_JWT))(GetReservationControllersTesting())(context)
 
 	var Reserve GetReservResponse
@@ -117,6 +120,7 @@ func TestGetReservationControllersSuccess(t *testing.T) {
 	}
 
 	e := InitEcho()
+	InsertUser()
 	InsertReser()
 	var userDB models.Users
 	tx := config.DB.Where("email = ? AND password = ?", mock_data_login.Email, mock_data_login.Password).First(&userDB)
@@ -127,18 +131,20 @@ func TestGetReservationControllersSuccess(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	req := httptest.NewRequest(http.MethodGet, "/reservation", nil)
 	req.Header.Set(echo.HeaderAuthorization, fmt.Sprintf("Bearer %v", token))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	context := e.NewContext(req, rec)
 	context.SetPath(testCases.path)
+	context.SetParamNames("id")
+	context.SetParamValues("1")
 	middleware.JWT([]byte(constants.SECRET_JWT))(GetReservationControllersTesting())(context)
 
-	var Reserve GetReservResponse
+	// var Reserve GetReservResponse
 	var Reservet ResponSuccess
 	rec_body := rec.Body.String()
-	json.Unmarshal([]byte(rec_body), &Reserve)
+	json.Unmarshal([]byte(rec_body), &Reservet)
 	if err != nil {
 		assert.Error(t, err, "error")
 	}
@@ -146,7 +152,6 @@ func TestGetReservationControllersSuccess(t *testing.T) {
 	t.Run("GET /jwt/reservation", func(t *testing.T) {
 		assert.Equal(t, testCases.code, rec.Code)
 		assert.Equal(t, testCases.name, Reservet.Message)
-		assert.Equal(t, testCases.name, Reserve.Data)
 		assert.Equal(t, "sahril", Reservet.Data[0].Credit.Name)
 	})
 

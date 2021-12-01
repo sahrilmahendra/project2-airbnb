@@ -24,6 +24,9 @@ type ValidatorUser struct {
 // controller untuk menampilkan seluruh data users
 func GetAllUsersControllers(c echo.Context) error {
 	users, err := databases.GetAllUsers()
+	if users == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	}
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}

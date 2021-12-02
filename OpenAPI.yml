@@ -2,14 +2,14 @@ openapi: '3.0.3'
 info:
   title: 'Project#2 Alta-BE4: Airbnb App'
   version: '1.0'
-  description: 'OpenAPI for Airbnb App'
+  description: 'OpenAPI for Project Airbnb App'
   contact: 
     name: Moch. Syahryil Mahendra
     email: nurilhuda7337@gmail.com
     url: https://github.com/sahrilmahendra
 servers:
   - url: https://{environment}.server.test/api/v1
-    description: Airbnb App servers
+    description: SwaggerHub API Auto Mocking
     variables:
       environment:
         default: dev
@@ -20,948 +20,955 @@ servers:
 externalDocs: 
   description: "Repository Github Project#2 Airbnb App"
   url: https://github.com/sahrilmahendra/project2-airbnb
+tags:
+  - name: Authentication
+    description: Authentication
+  - name: Users
+    description: User control
+  - name: Homestay
+    description: Homestay data management
+  - name: Reservations
+    description: Feature of a homestay reservation
+  - name: Homestay Facilities
+    description: Feature of a homestay facilities
 paths:
+####################################
+#  AUTHENTICATION
+####################################
   /login:
     post:
       tags:
         - Authentication
       summary: Get access to account
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  example: nurilhuda7337@gmail.com
-                password:
-                  type: string
-                  example: 12345
-            example:
-              email: supriadi15001@gmail.com
-              password: qwerty
-      responses: 
+        $ref: '#/components/requestBodies/requestBodyLogin'
+      responses:
         '200':
-          description: Login Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Login Success
-                  Data:
-                    type: string
-                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgxOTUwMDksInVzZXJJZCI6MX0.0gso_gffYqaDGmCTqYClvhaNZZdbe7FbV7hJ02lOpoQ
+          $ref: '#/components/responses/LoginSuccess'
         '400':
-          description: Login Failed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Login Failed      
+          $ref: '#/components/responses/LoginFailed'
+ ####################################
+ #  USERS
+ ####################################
   /users:
     post:
       tags:
         - Users
       summary: Create a new account
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: Moch. Syahryil Mahendra
-                email:
-                  type: string
-                  example: sahrilmahendra@gmail.com
-                password:
-                  type: string
-                  example: qwerty
-            example:
-              name: Supriadi
-              email: supriadi15001@gmail.com
-              password: qwerty
+        $ref: '#/components/requestBodies/requestBodyCreateUser'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/CreateUserSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
+          $ref: '#/components/responses/CreateUserFailed'
   /users/{id}:
     get:
       tags:
         - Users
       summary: Get user by id
+      security:
+        - JWTAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true 
-          schema:
-            type: number
-            example: 1 
+        - $ref: '#/components/parameters/pathParam'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Data:
-                    type: object
-                    properties:
-                      ID:
-                        type: number
-                        example: 2
-                      Name:
-                        type: string
-                        example: Nuril Huda
-                      Email:
-                        type: string
-                        example: nurilhuda7337@gmail.com
-                  Message:
-                    type: string
-                    example: Successfull Operation
+          $ref: '#/components/responses/GetUserSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request 
-        '415':
-          description: False Param
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 415
-                  Message:
-                    type: string
-                    example: False Param
+          $ref: '#/components/responses/GetUserFailed'
     put:
       tags:
         - Users
       summary: Update user by id
+      security:
+        - JWTAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
+        - $ref: '#/components/parameters/pathParam'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:  
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: Sahril Mahendra
-                email:
-                  type: string
-                  example: m.sahril@gmail.com
-                password:
-                  type: string
-                  example: newqwerty
+        $ref: '#/components/requestBodies/requestBodyUpdateUser'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
-              example:
-                Code: 200
-                Message: Successful operation
+          $ref: '#/components/responses/UpdateUserSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
-        '403':
-          description: Access Forbidden 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Access Forbidden 
+          $ref: '#/components/responses/UpdateUserFailed'
+        
     delete:
       tags:
         - Users
       summary: Delete user by id
+      security:
+        - JWTAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            default: 1
+        - $ref: '#/components/parameters/pathParam'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
-              example:
-                Code: 200
-                Message: Successful operation
+          $ref: '#/components/responses/DeleteUserSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
-        '403':
-          description: Access Forbidden 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 403
-                  Message:
-                    type: string
-                    example: Access Forbidden 
+          $ref: '#/components/responses/DeleteUserFailed'
+ ####################################
+ #  HOMESTAY
+ ####################################
   /homestay:
     post:
       tags:
         - Homestay
       summary: Create a new homestay
+      security:
+        - JWTAuth: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name_homestay:
-                  type: string
-                  example: Rumah Jendela
-                price:
-                  type: number
-                  example: 1300000
-                description:
-                  type: string
-                  example: We serve the best our place for your satisfaction
-                address:
-                  type: string
-                  example: Dago Atas, Bandung
+        $ref: '#/components/requestBodies/requestBodyCreateHomestay'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/CreateHomestaySuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
+          $ref: '#/components/responses/CreateHomestayFailed'
     get:
       tags:
       - Homestay
       summary: Get all homestays
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    Code:
-                      type: number
-                      example: 200
-                    Data:
-                      type: object
-                      properties:
-                        ID:
-                          type: number
-                          example: 1
-                        Name_Homestay:
-                          type: string
-                          example: Rumah Jendela
-                        Price:
-                          type: number
-                          example: 1300000
-                        Description:
-                          type: string
-                          example: We serve the best our place for your satisfaction
-                        Address:
-                          type: string
-                          example: Dago, Bandung
-                        Latitude:
-                          type: number
-                          example: -6.877258
-                        Longitude:
-                          type: number
-                          example: 107.617412
-                    Message:
-                      type: string
-                      example: Succesful Operation      
+          $ref: '#/components/responses/GetAllHomestaysSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request 
+          $ref: '#/components/responses/GetAllHomestaysFailed'
   /homestay/{id}:
     get:
       tags:
         - Homestay
       summary: Get homestay by id
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
+        - $ref: '#/components/parameters/pathParam'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Data:
-                    type: object
-                    properties:
-                      ID:
-                        type: number
-                        example: 1
-                      Name_Homestay:
-                        type: string
-                        example: Rumah Jendela
-                      Price:
-                        type: number
-                        example: 1370523
-                      Description:
-                        type: string
-                        example: We serve the best our place for your satisfaction
-                      Address:
-                        type: string
-                        example: Dago, Bandung
-                      Latitude:
-                        type: number
-                        example: -6.877258
-                      Longitude:
-                        type: number
-                        example: 107.617412
-                  Message:
-                    type: string
-                    example: Succesful Operation
+          $ref: '#/components/responses/GetHomestaySuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
-        '415':
-          description: False Param
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 415
-                  Message:
-                    type: string
-                    example: False Param
+          $ref: '#/components/responses/GetHomestayFailed'
     put:
       tags:
         - Homestay
       summary: Update homestay by id
+      security:
+        - JWTAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
+        - $ref: '#/components/parameters/pathParam'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:  
-              type: object
-              properties:
-                name_homestay:
-                  type: string
-                  example: Rumah Kaca
-                price:
-                  type: number
-                  example: 1200000
-                description:
-                  type: string
-                  example: Fresh and cool
-                address:
-                  type: string
-                  example: Lembang, Bandung
+        $ref: '#/components/requestBodies/requestBodyUpdateHomestay'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/UpdateHomestaySuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
-        '403':
-          description: Access Forbidden 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 403
-                  Message:
-                    type: string
-                    example: Access Forbidden
-        '415':
-          description: False Param
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 415
-                  Message:
-                    type: string
-                    example: False Param
+          $ref: '#/components/responses/UpdateHomestayFailed'
     delete:
       tags:
       - Homestay
       summary: Delete homestay by id
+      security:
+        - JWTAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true 
-          schema:
-            type: number
-            example: 1
+        - $ref: '#/components/parameters/pathParam'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/DeleteHomestaySuccess'
         '400':
-          description: False Param
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: False Param
-        '403':
-          description: Access Forbidden 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 403
-                  Message:
-                    type: string
-                    example: Access Forbidden
+          $ref: '#/components/responses/DeleteHomestayFailed'
+####################################
+#  HOMESTAY FACILITIES
+####################################
   /homestay/facilities:
     post:
       tags:
       - Homestay Facilities
       summary: Create a homestay facility
+      security:
+        - JWTAuth: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                homestay_id:
-                  type: number
-                  example: 1
-                facility_id:
-                  type: number
-                  example: 1
+        $ref: '#/components/requestBodies/requestBodyCreateHomestayFacility'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/CreateHomestayFacilitySuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
+          $ref: '#/components/responses/CreateHomestayFacilityFailed'
   /homestay/facilities/{id}:
     put:
       tags:
       - Homestay Facilities
       summary: Update homestay facility by id
+      security:
+        - JWTAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: number
-            example: 1
+        - $ref: '#/components/parameters/pathParam'
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:  
-              type: object
-              properties:
-                homestay_id:
-                  type: number
-                  example: 2
-                facility_id:
-                  type: number
-                  example: 2
+        $ref: '#/components/requestBodies/requestBodyUpdateHomestayFacility'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/UpdateHomestayFacilitySuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
-        '415':
-          description: False Param 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 415
-                  Message:
-                    type: string
-                    example: False Param       
+          $ref: '#/components/responses/UpdateHomestayFacilityFailed'      
     delete:
       tags:
         - Homestay Facilities
       summary: Delete homestay facility by id
+      security:
+        - JWTAuth: []
       parameters:
-        - name: id
-          in: path
-          required: true 
-          schema:
-            type: number
-            example: 1
+        - $ref: '#/components/parameters/pathParam'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/DeleteHomestayFacilitySuccess'
         '400':
-          description: False Param
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: False Param
-        '403':
-          description: Access Forbidden 
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 403
-                  Message:
-                    type: string
-                    example: Access Forbidden
+          $ref: '#/components/responses/DeleteHomestayFacilityFailed'
+####################################
+#  RESERVATIONS
+####################################
   /reservations/check:
     post:
       tags:
         - Reservations
       summary: Check. is homestay available?
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:  
-              type: object
-              properties:
-                homestay_id:
-                  type: number
-                  example: 1
-                start_date:
-                  type: string
-                  example: "2021-11-30"
-                end_date:
-                  type: string
-                  example: "2021-12-01"
+        $ref: '#/components/requestBodies/requestBodyCheckReservation'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Available
+          $ref: '#/components/responses/CheckReservationSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
+          $ref: '#/components/responses/CheckReservationFailed'
   /reservations:
     post:
       tags:
       - Reservations
       summary: Create a new reservation
+      security:
+        - JWTAuth: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:  
-              type: object
-              properties:
-                homestay_id:
-                  type: number
-                  example: 1
-                start_date:
-                  type: string
-                  example: "2021-11-30"
-                end_date:
-                  type: string
-                  example: "2021-12-01"
-                credit_card:
-                  type: object
-                  properties:
-                    typ:
-                      type: string
-                      example: Master Card
-                    name:
-                      type: string
-                      example: Supriadi
-                    number:
-                      type: string
-                      example: 1000-1000-1000-1000
-                    cvv:
-                      type: number
-                      example: 10101
-                    month:
-                      type: number
-                      example: 1
-                    year:
-                      type: number
-                      example: 21
+        $ref: '#/components/requestBodies/requestBodyReservation'
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 200
-                  Message:
-                    type: string
-                    example: Successful Operation
+          $ref: '#/components/responses/CreateReservationSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
+          $ref: '#/components/responses/CreateReservationFailed'
     get:
       tags:
       - Reservations
       summary: Get all reservations
+      security:
+        - JWTAuth: []
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    Code:
-                      type: number
-                      example: 200
-                    Data:
-                      type: object
-                      properties:
-                        UserID:
-                          type: number
-                          example: 1
-                        HomestayID:
-                          type: number
-                          example: 1
-                        Name_Homestay:
-                          type: string
-                          example: Rumah Jendela
-                        Start_date:
-                          type: string
-                          example: "2021-11-30"
-                        End_date:
-                          type: string
-                          example: "2021-12-01"
-                        Price:
-                          type: number
-                          example: 1300000
-                        Total_harga:
-                          type: number
-                          example: 2600000
-                    Message:
-                      type: string
-                      example: Succesful Operation      
+          $ref: '#/components/responses/GetAllReservationSuccess'
         '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  Code:
-                    type: number
-                    example: 400
-                  Message:
-                    type: string
-                    example: Bad Request
+          $ref: '#/components/responses/GetAllReservationFailed'
+####################################
+#  COMPONENTS
+####################################
+components:
+  schemas:
+    requestDataLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+    requestDataUser:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+    requestDataHomestay:
+      type: object
+      properties:
+        name_homestay:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        address:
+          type: string
+    requestDataHomestayFacilities:
+      type: object
+      properties:
+        homestay_id:
+          type: number
+        facility_id:
+          type: number
+    requestDataReservationCheck:
+      type: object
+      properties:
+        homestay_id:
+          type: number
+        start_date:
+          type: string
+        end_date:
+          type: string
+    requestDataReservation:
+      type: object
+      properties:
+        homestay_id:
+          type: number
+          example: 1
+        start_date:
+          type: string
+          example: "2021-11-30"
+        end_date:
+          type: string
+          example: "2021-12-01"
+        credit_card:
+          type: object
+          properties:
+            typ:
+              type: string
+              example: Master Card
+            name:
+              type: string
+              example: Supriadi
+            number:
+              type: string
+              example: 1000-1000-1000-1000
+            cvv:
+              type: number
+              example: 10101
+            month:
+              type: number
+              example: 1
+            year:
+              type: number
+              example: 21
+    responseWithData:
+      type: object
+      properties:
+        Code:
+          type: number
+        Message:
+          type: string
+        Data:
+          type: string       
+    responseNonData: 
+      type: object
+      properties:
+        Code:
+          type: number
+        Message:
+          type: string 
+  parameters:
+    pathParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: number
+        example: 1
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
+  requestBodies:
+    requestBodyLogin:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataLogin'
+          examples:
+            user1:
+              value:
+                email: supriadi15001@gmail.com
+                password: qwerty
+            user2:
+              value:
+                email: sahrilmahendra@gmail.com
+                password: qwerty
+            user3:
+              value:
+                email: nurilhuda7337@gmail.com
+                password: qwerty
+    requestBodyCreateUser:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataUser'
+          examples:
+            newUser1:
+              value:
+                name: Nuril Huda
+                email: nurilhuda7337@gmail.com
+                password: qwerty
+            newUser2:
+              value:
+                name: Supriadi
+                email: supriadi15001@gmail.com
+                password: qwerty
+            newUser3:
+              value:
+                name: Sahril Mahendra
+                email: sahrilmahendra@gmail.com
+                password: qwerty
+    requestBodyUpdateUser:
+      required: true
+      content:
+        application/json:
+          schema:  
+            $ref: '#/components/schemas/requestDataUser'
+          examples:
+            newData1:
+              value:
+                name: Sahril Real
+                email: sahrilasli@gmail.com
+                password: rahasia
+            newData2:
+              value:
+                name: Nuriel Noah
+                email: nurielnoah@gmail.com
+                password: saudaranyaarielnoah
+            newData3:
+              value:
+                name: New Supriadi
+                email: supriadinew@gmail.com
+                password: newpass
+    requestBodyCreateHomestay:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataHomestay'
+          example:
+            name_homestay: Rumah Jendela
+            price: 1300000
+            description: We serve the best our place for your satisfaction
+            address: Dago Atas, Bandung
+    requestBodyUpdateHomestay:
+      required: true
+      content:
+        application/json:
+          schema:  
+            $ref: '#/components/schemas/requestDataHomestay'
+          example:
+            name_homestay: Rumah Kaca
+            price: 1500000
+            description: Cool and fresh. Wuuush..
+            address: Lembang, Bandung
+    requestBodyCreateHomestayFacility:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataHomestayFacilities'
+          example:
+            homestay_id: 1
+            facility_id: 1
+    requestBodyUpdateHomestayFacility:
+      required: true
+      content:
+        application/json:
+          schema:  
+            $ref: '#/components/schemas/requestDataHomestayFacilities'
+          example:
+            homestay_id: 2
+            facility_id: 2
+    requestBodyCheckReservation:
+      required: true
+      content:
+        application/json:
+          schema:  
+            $ref: '#/components/schemas/requestDataReservationCheck'
+          example:
+            homestay_id: 1
+            start_date: "2021-11-30"
+            end_date: "2021-12-01"
+    requestBodyReservation: 
+      required: true
+      content:
+        application/json:
+          schema:  
+            $ref: '#/components/schemas/requestDataReservation'
+  responses:
+    LoginSuccess:
+      description: Login Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseWithData'
+          example:
+            Code: 200
+            Message: Login Success
+            Data: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgxOTUwMDksInVzZXJJZCI6MX0.0gso_gffYqaDGmCTqYClvhaNZZdbe7FbV7hJ02lOpoQ
+    LoginFailed:
+      description: Login Failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 400 
+            Message: Email or Password Incorrect
+    CreateUserSuccess:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    CreateUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 400
+            Message: Bad Request
+    GetUserSuccess:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseWithData'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: {
+              ID: 1,
+              Name: Supriadi,
+              Email: supriadi15000@gmail.com
+            }
+    GetUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              description: Id is invalid
+              value:
+                Code: 400
+                Message: Invalid Id
+            Data Not Found:
+              description: User is not found
+              value:
+                Code: 400
+                Message: Data Not Found
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+    UpdateUserSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    UpdateUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              description: Id is invalid
+              value:
+                Code: 400
+                Message: Invalid Id
+            Data Not Found:
+              description: User is not found
+              value:
+                Code: 400
+                Message: Data Not Found
+            Access Forbidden:
+              value:
+                Code: 400
+                Message: Access Forbidden
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+    DeleteUserSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    DeleteUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              description: Id is invalid
+              value:
+                Code: 400
+                Message: Invalid Id
+            Data Not Found:
+              description: User is not found
+              value:
+                Code: 400
+                Message: Data Not Found
+            Access Forbidden:
+              value:
+                Code: 400
+                Message: Access Forbidden
+    CreateHomestaySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    CreateHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 400
+            Message: Bad Request
+    GetAllHomestaysSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseWithData'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: [
+                { ID: 1,
+                Name_Homestay: Rumah Jendela,
+                Price: 1300000,
+                Description: We serve the best our place for your satisfaction,
+                Address: "Dago, Bandung",
+                Latitude: -6.877258,
+                Longitude: 107.617412},
+                { ID: 2,
+                Name_Homestay: Rumah Kaca,
+                Price: 1500000,
+                Description: Fresh and cool. Wuuush..,
+                Address: "Lembang, Bandung",
+                Latitude: -6.877258,
+                Longitude: 107.617412}
+            ]
+    GetAllHomestaysFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+    GetHomestaySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseWithData'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: { 
+                ID: 1,
+                Name_Homestay: Rumah Jendela,
+                Price: 1300000,
+                Description: We serve the best our place for your satisfaction,
+                Address: "Dago, Bandung",
+                Latitude: -6.877258,
+                Longitude: 107.617412
+            }
+    GetHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              value:
+                Code: 400
+                Message: Invalid Id
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+    UpdateHomestaySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    UpdateHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              value:
+                Code: 400
+                Message: Invalid Id
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Access Forbidden:
+              value:
+                Code: 400
+                Message: Access Forbidden
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+    DeleteHomestaySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    DeleteHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              value:
+                Code: 400
+                Message: Invalid Id
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Access Forbidden:
+              value:
+                Code: 400
+                Message: Access Forbidden
+    CreateHomestayFacilitySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    CreateHomestayFacilityFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 400
+            Message: Bad Request
+    UpdateHomestayFacilitySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    UpdateHomestayFacilityFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              value:
+                Code: 400
+                Message: Invalid Id
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+    DeleteHomestayFacilitySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    DeleteHomestayFacilityFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              value:
+                Code: 400
+                Message: Invalid Id
+            Access Forbidden:
+              value:
+                Code: 400
+                Message: Access Forbidden
+    CheckReservationSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Available:
+              value:
+                Code: 200
+                Message: Success Operation
+                Data: Available
+            Not Available:
+              value:
+                Code: 200
+                Message: Success Operation
+                Data: Not Available
+    CheckReservationFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Date:
+              value:
+                Code: 400
+                Message: Invalid Date
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+    CreateReservationSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    CreateReservationFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Date:
+              value:
+                Code: 400
+                Message: Invalid Date
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+            Access Forbidden:
+              value:
+                Code: 400
+                Message: Access Forbidden
+            Not Available:
+              value:
+                Code: 400
+                Message: Not Available
+    GetAllReservationSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseWithData'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: [{
+              UserID: 1,
+              HomestayID: 1,
+              Name_Homestay: Rumah Jendela,
+              Start_date: "2021-11-30",
+              End_date: "2021-13-01",
+              Price: 1300000,
+              Total_harga: 2600000
+              },
+              {
+                UserID: 1,
+                HomestayID: 2,
+                Name_Homestay: Rumah Kaca,
+                Start_date: "2021-11-30",
+                End_date: "2021-13-01",
+                Price: 1500000,
+                Total_harga: 3000000,
+              }            
+            ]
+    GetAllReservationFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Data Not Found:
+              value:
+                Code: 400
+                Message: Data Not Found
+            Bad Request:
+              value:
+                Code: 400
+                Message: Bad Request
+
+  

@@ -18,3 +18,9 @@ type GetUser struct {
 	Name  string
 	Email string
 }
+
+type GetLoginUser struct {
+	ID    uint
+	Name  string
+	Token string
+}

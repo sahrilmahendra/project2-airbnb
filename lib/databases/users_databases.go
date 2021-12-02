@@ -76,6 +76,7 @@ func UpdateUser(id int, user *models.Users) (interface{}, error) {
 
 // function login database untuk mendapatkan token
 func LoginUser(plan_pass string, user *models.Users) (interface{}, error) {
+	var get_login models.GetLoginUser
 	err := config.DB.Where("email = ?", user.Email).First(&user).Error
 	if err != nil {
 		return nil, err
@@ -90,8 +91,11 @@ func LoginUser(plan_pass string, user *models.Users) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
+	get_login.ID = user.ID
+	get_login.Name = user.Name
+	get_login.Token = user.Token
 	if err = config.DB.Save(user).Error; err != nil {
 		return nil, err
 	}
-	return user.Token, nil
+	return get_login, nil
 }

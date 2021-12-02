@@ -36,16 +36,16 @@ func CreateHomestayFacilityControllers(c echo.Context) error {
 		}
 	}
 	if err != nil || homestay_facility == nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk memperbarui homestay facility by id
 func UpdateHomestayFacilityControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
 	}
 	update_homestay_facility := models.Homestay_Facility{}
 	c.Bind(&update_homestay_facility)
@@ -63,23 +63,26 @@ func UpdateHomestayFacilityControllers(c echo.Context) error {
 			homestay_facility, e = databases.UpdateHomestayFacility(id, &update_homestay_facility)
 		}
 	}
-	if e != nil || homestay_facility == nil {
-		return c.JSON(http.StatusBadRequest, response.BadRequestResponse())
+	if homestay_facility == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
 // controller untuk mengapus data homestay facility by id
 func DeleteHomestayFacilityControllers(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, response.FalseParamResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
 	}
 	id_user_homestay, _ := databases.GetIDUserHomestay(id)
 	logged := middlewares.ExtractTokenId(c)
 	if uint(logged) != id_user_homestay {
-		return c.JSON(http.StatusBadRequest, response.AccessForbiddenResponse())
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Access Forbidden"))
 	}
 	databases.DeleteHomestayFacility(id)
-	return c.JSON(http.StatusOK, response.SuccessResponseNonData())
+	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }

@@ -4,76 +4,30 @@ import (
 	"net/http"
 )
 
-// function response false param
-func FalseParamResponse() map[string]interface{} {
-	result := map[string]interface{}{
-		"Code":    http.StatusBadRequest,
-		"Message": "False Param",
-	}
-	return result
-}
-
 // function response bad request
-func BadRequestResponse() map[string]interface{} {
+func BadRequestResponse(message string) map[string]interface{} {
 	result := map[string]interface{}{
 		"Code":    http.StatusBadRequest,
-		"Message": "Bad Request",
+		"Message": message,
 	}
 	return result
 }
 
-// function response access forbidden
-func AccessForbiddenResponse() map[string]interface{} {
-	result := map[string]interface{}{
-		"Code":    http.StatusBadRequest,
-		"Message": "Access Forbidden",
-	}
-	return result
-}
-
-// function response success dengan paramater
-func SuccessResponseData(data interface{}) map[string]interface{} {
+// function response success dengan return value data
+func SuccessResponseData(message string, data interface{}) map[string]interface{} {
 	result := map[string]interface{}{
 		"Code":    http.StatusOK,
-		"Message": "Successful Operation",
+		"Message": message,
 		"Data":    data,
 	}
 	return result
 }
 
-// function response success tanpa parameter
-func SuccessResponseNonData() map[string]interface{} {
+// function response success tanpa return value data
+func SuccessResponseNonData(message string) map[string]interface{} {
 	result := map[string]interface{}{
 		"Code":    http.StatusOK,
-		"Message": "Successful Operation",
-	}
-	return result
-}
-
-// function response login failure
-func LoginFailedResponse() map[string]interface{} {
-	result := map[string]interface{}{
-		"Code":    http.StatusBadRequest,
-		"Message": "Login Failed",
-	}
-	return result
-}
-
-// function response login success
-func LoginSuccessResponse(data interface{}) map[string]interface{} {
-	result := map[string]interface{}{
-		"Code":    http.StatusOK,
-		"Message": "Login Success",
-		"Data":    data,
-	}
-	return result
-}
-
-// function response available homestay
-func AvailableResponse(data interface{}) map[string]interface{} {
-	result := map[string]interface{}{
-		"Code":    http.StatusOK,
-		"Message": data,
+		"Message": message,
 	}
 	return result
 }

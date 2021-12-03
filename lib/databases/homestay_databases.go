@@ -72,7 +72,7 @@ func DeleteHomestay(id int) (interface{}, error) {
 
 // function database untuk menampilkan homestay by id user
 func GetHomestayByIdUser(id int) (interface{}, error) {
-	var get_homestay_by_id_user models.GetHomestay
+	var get_homestay_by_id_user []models.GetHomestay
 	query := config.DB.Table("homestays").Select("*").Where("homestays.deleted_at IS NULL AND homestays.users_id = ?", id).Find(&get_homestay_by_id_user)
 	if query.Error != nil || query.RowsAffected == 0 {
 		return nil, query.Error

@@ -1,7 +1,7 @@
 openapi: '3.0.3'
 info:
   title: 'Project#2 Alta-BE4: Airbnb App'
-  version: '1.0'
+  version: '1.1'
   description: 'OpenAPI for Project Airbnb App'
   contact: 
     name: Moch. Syahryil Mahendra
@@ -47,9 +47,9 @@ paths:
           $ref: '#/components/responses/LoginSuccess'
         '400':
           $ref: '#/components/responses/LoginFailed'
- ####################################
- #  USERS
- ####################################
+####################################
+#  USERS
+####################################
   /users:
     post:
       tags:
@@ -313,15 +313,18 @@ components:
     requestDataReservation:
       type: object
       properties:
-        homestay_id:
-          type: number
-          example: 1
-        start_date:
-          type: string
-          example: "2021-11-30"
-        end_date:
-          type: string
-          example: "2021-12-01"
+        reservation:
+          type: object
+          properties:
+            homestay_id:
+              type: number
+              example: 1
+            start_date:
+              type: string
+              example: "2021-11-30"
+            end_date:
+              type: string
+              example: "2021-12-01"
         credit_card:
           type: object
           properties:
@@ -668,14 +671,16 @@ components:
                 Description: We serve the best our place for your satisfaction,
                 Address: "Dago, Bandung",
                 Latitude: -6.877258,
-                Longitude: 107.617412},
+                Longitude: 107.617412,
+                UsersID: 1},
                 { ID: 2,
                 Name_Homestay: Rumah Kaca,
                 Price: 1500000,
                 Description: Fresh and cool. Wuuush..,
                 Address: "Lembang, Bandung",
                 Latitude: -6.877258,
-                Longitude: 107.617412}
+                Longitude: 107.617412,
+                UsersID: 1}
             ]
     GetAllHomestaysFailed:
       description: Bad Request
@@ -708,7 +713,8 @@ components:
                 Description: We serve the best our place for your satisfaction,
                 Address: "Dago, Bandung",
                 Latitude: -6.877258,
-                Longitude: 107.617412
+                Longitude: 107.617412,
+                UsersID: 1
             }
     GetHomestayFailed:
       description: Bad Request

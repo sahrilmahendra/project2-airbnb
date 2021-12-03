@@ -45,6 +45,7 @@ func New() *echo.Echo {
 	j.POST("/homestay", controllers.CreateHomestayControllers)
 	j.PUT("/homestay/:id", controllers.UpdateHomestayControllers)
 	j.DELETE("/homestay/:id", controllers.DeleteHomestayControllers)
+	j.GET("/homestay/mine", controllers.GetMyHomestayControllers)
 
 	// route reservation
 	j.GET("/reservation", controllers.GetReservationControllers)

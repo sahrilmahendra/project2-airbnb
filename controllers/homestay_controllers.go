@@ -130,3 +130,18 @@ func DeleteHomestayControllers(c echo.Context) error {
 	databases.DeleteHomestay(id)
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
+
+func GetMyHomestayControllers(c echo.Context) error {
+	logged := middlewares.ExtractTokenId(c)
+	if logged == 0 {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	}
+	homestay, e := databases.GetHomestayByIdUser(logged)
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	}
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", homestay))
+}

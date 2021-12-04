@@ -1,6 +1,7 @@
 package databases
 
 import (
+	"log"
 	"project2/config"
 	"project2/models"
 )
@@ -78,4 +79,16 @@ func GetHomestayByIdUser(id int) (interface{}, error) {
 		return nil, query.Error
 	}
 	return get_homestay_by_id_user, nil
+}
+
+// function database untuk menampilkan homestay by address
+func GetHomestayByAddress(address string) (interface{}, error) {
+	var get_homestay_by_address []models.GetHomestay
+	// where_clause := fmt.Sprintf("homestays.deleted_at IS NULL AND homestays.address LIKE %sidoarjo%")
+	log.Println("address", address)
+	query := config.DB.Table("homestays").Select("*").Where("homestays.deleted_at IS NULL AND homestays.address LIKE '%" + address + "%'").Find(&get_homestay_by_address)
+	if query.Error != nil || query.RowsAffected == 0 {
+		return nil, query.Error
+	}
+	return get_homestay_by_address, nil
 }

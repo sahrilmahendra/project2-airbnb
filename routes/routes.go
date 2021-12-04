@@ -25,6 +25,7 @@ func New() *echo.Echo {
 	// route homestay tanpa JWT
 	e.GET("/homestay", controllers.GetAllHomestayControllers)
 	e.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
+	e.GET("/homestay/address/:id", controllers.GetHomestayByAddressControllers)
 
 	// route facility tanpa JWT
 	e.POST("/facility", controllers.CreateFacilityControllers)

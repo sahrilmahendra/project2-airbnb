@@ -79,9 +79,26 @@ func UpdateHomestayFacilityControllers(c echo.Context) error {
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
 
-// controller untuk menampilkan seluruh data homestay
+// controller untuk menampilkan seluruh data homestay facility
 func GetAllHomestayFacilityControllers(c echo.Context) error {
 	homestay, err := databases.GetAllHomestayFacility()
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", homestay))
+}
+
+// controller untuk menampilkan seluruh data homestay facility
+func GetHomestayFacilityByIdControllers(c echo.Context) error {
+	id, er := strconv.Atoi(c.Param("id"))
+	if er != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Invalid Id"))
+	}
+
+	homestay, err := databases.GetHomestayFacilityById(id)
 	if homestay == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}

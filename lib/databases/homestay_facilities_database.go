@@ -56,6 +56,15 @@ func GetAllHomestayFacility() (interface{}, error) {
 	return homestay_facility, nil
 }
 
+func GetHomestayFacilityById(id_home int) (interface{}, error) {
+	var homestay_facility []models.Get_Homestay_Facility
+	query := config.DB.Table("homestay_facilities").Select("*").Where("homestay_facilities.homestay_id = ? && deleted_at IS NULL", id_home).Find(&homestay_facility)
+	if query.Error != nil || query.RowsAffected == 0 {
+		return nil, query.Error
+	}
+	return homestay_facility, nil
+}
+
 // function database untuk menghapus data homestay facility by id
 func DeleteHomestayFacility(id int) (interface{}, error) {
 	var homestay_facility models.Homestay_Facility

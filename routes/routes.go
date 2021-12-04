@@ -53,6 +53,7 @@ func New() *echo.Echo {
 
 	// route homestay facility dengan JWT
 	j.GET("/homestay/facilities", controllers.GetAllHomestayFacilityControllers)
+	j.GET("/homestay/facilities/:id", controllers.GetHomestayFacilityByIdControllers)
 	j.POST("/homestay/facilities", controllers.CreateHomestayFacilityControllers)
 	j.PUT("/homestay/facilities/:id", controllers.UpdateHomestayFacilityControllers)
 	j.DELETE("/homestay/facilities/:id", controllers.DeleteHomestayFacilityControllers)

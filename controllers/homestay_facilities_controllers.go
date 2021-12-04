@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
 	"project2/lib/databases"
 	"project2/middlewares"
@@ -30,13 +31,17 @@ func CreateHomestayFacilityControllers(c echo.Context) error {
 	var homestay_facility interface{}
 	if err == nil {
 		logged := middlewares.ExtractTokenId(c)
-		id_user_homestay, _ := databases.GetIDUserHomestay(logged)
+		id_user_homestay, _ := databases.GetIDUserHomestay(int(new_homestay_facility.HomestayID))
+		fmt.Println("cek user id home", id_user_homestay)
 		if logged == int(id_user_homestay) {
 			homestay_facility, err = databases.CreateHomestayFacility(&new_homestay_facility)
 		}
 	}
 	if err != nil || homestay_facility == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	} else if homestay_facility == "Data Is Available" {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Is Available"))
+
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
 }
@@ -65,11 +70,25 @@ func UpdateHomestayFacilityControllers(c echo.Context) error {
 	}
 	if homestay_facility == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	} else if homestay_facility == "Data Is Available" {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Is Available"))
 	}
 	if e != nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
 	}
 	return c.JSON(http.StatusOK, response.SuccessResponseNonData("Success Operation"))
+}
+
+// controller untuk menampilkan seluruh data homestay
+func GetAllHomestayFacilityControllers(c echo.Context) error {
+	homestay, err := databases.GetAllHomestayFacility()
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	}
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", homestay))
 }
 
 // controller untuk mengapus data homestay facility by id

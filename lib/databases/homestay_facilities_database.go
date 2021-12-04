@@ -1,6 +1,7 @@
 package databases
 
 import (
+	"fmt"
 	"project2/config"
 	"project2/models"
 )
@@ -12,22 +13,54 @@ func CreateHomestayFacility(homestay_facility *models.Homestay_Facility) (interf
 	// if facility != nil {
 	// 	return nil, nil
 	// }
-	if e := config.DB.Create(&homestay_facility).Error; e != nil {
-		return nil, e
+	cek := CekHomestayFacilityById(int(homestay_facility.HomestayID), int(homestay_facility.FacilityID))
+	fmt.Println("cek", cek)
+	if cek != "Data Is Available" {
+		e := config.DB.Create(&homestay_facility).Error
+		if e != nil || cek == "Query Error" {
+			return nil, e
+		}
+		return homestay_facility, nil
+	} else {
+		return cek, nil
 	}
-	return homestay_facility, nil
 }
 
 // function database untuk memperbarui data homestay facility by id
 func UpdateHomestayFacility(id int, update_homestay_facility *models.Homestay_Facility) (interface{}, error) {
 	var homestay_facility models.Homestay_Facility
-	query_select := config.DB.Find(&homestay_facility, id)
-	if query_select.Error != nil || query_select.RowsAffected == 0 {
-		return nil, query_select.Error
+	cek := CekHomestayFacilityById(int(update_homestay_facility.HomestayID), int(update_homestay_facility.FacilityID))
+	fmt.Println("cek", cek)
+	if cek != "Data Is Available" {
+		query_select := config.DB.Find(&homestay_facility, id)
+		if query_select.Error != nil || query_select.RowsAffected == 0 {
+			return nil, query_select.Error
+		}
+		query_update := config.DB.Model(&homestay_facility).Updates(update_homestay_facility)
+		if query_update.Error != nil || cek == "Query Error" {
+			return nil, query_update.Error
+		}
+		return homestay_facility, nil
+	} else {
+		return cek, nil
 	}
-	query_update := config.DB.Model(&homestay_facility).Updates(update_homestay_facility)
-	if query_update.Error != nil {
-		return nil, query_update.Error
+
+}
+
+func GetAllHomestayFacility() (interface{}, error) {
+	var homestay_facility []models.Get_Homestay_Facility
+	query := config.DB.Table("homestay_facilities").Select("*").Where("deleted_at IS NULL").Find(&homestay_facility)
+	if query.Error != nil || query.RowsAffected == 0 {
+		return nil, query.Error
+	}
+	return homestay_facility, nil
+}
+
+func GetHomestayFacilityById(id_home int) (interface{}, error) {
+	var homestay_facility []models.Get_Homestay_Facility
+	query := config.DB.Table("homestay_facilities").Select("*").Where("homestay_facilities.homestay_id = ? && deleted_at IS NULL", id_home).Find(&homestay_facility)
+	if query.Error != nil || query.RowsAffected == 0 {
+		return nil, query.Error
 	}
 	return homestay_facility, nil
 }
@@ -42,4 +75,16 @@ func DeleteHomestayFacility(id int) (interface{}, error) {
 		return nil, err
 	}
 	return homestay_facility.ID, nil
+}
+
+func CekHomestayFacilityById(id_home, id_facility int) string {
+	var homestay_facility models.Homestay_Facility
+	err := config.DB.Table("homestay_facilities").Select("*").Where("homestay_facilities.homestay_id = ? && homestay_facilities.facility_id = ? ", id_home, id_facility).Find(&homestay_facility)
+	fmt.Println("coba cek isi dhome faci", err)
+	if err.RowsAffected <= 0 {
+		return "Data Not Found"
+	} else if err.Error != nil {
+		return "Query Error"
+	}
+	return "Data Is Available"
 }

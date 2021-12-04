@@ -16,6 +16,7 @@ func New() *echo.Echo {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
 	}))
+
 	// route users tanpa JWT
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)
@@ -26,6 +27,8 @@ func New() *echo.Echo {
 	e.GET("/homestay", controllers.GetAllHomestayControllers)
 	e.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
 	e.GET("/homestay/address/:id", controllers.GetHomestayByAddressControllers)
+
+	// e.POST("/homestay/upload/:id", controllers.UploadFileToGCSBucket)
 
 	// route facility tanpa JWT
 	e.POST("/facility", controllers.CreateFacilityControllers)
@@ -54,6 +57,8 @@ func New() *echo.Echo {
 	j.POST("/reservation/check", controllers.CekReservationControllers)
 
 	// route homestay facility dengan JWT
+	j.GET("/homestay/facilities", controllers.GetAllHomestayFacilityControllers)
+	j.GET("/homestay/facilities/:id", controllers.GetHomestayFacilityByIdControllers)
 	j.POST("/homestay/facilities", controllers.CreateHomestayFacilityControllers)
 	j.PUT("/homestay/facilities/:id", controllers.UpdateHomestayFacilityControllers)
 	j.DELETE("/homestay/facilities/:id", controllers.DeleteHomestayFacilityControllers)

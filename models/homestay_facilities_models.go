@@ -11,6 +11,8 @@ type Homestay_Facility struct {
 
 type Get_Homestay_Facility struct {
 	ID            uint
-	Name_Homestay string
+	HomestayID    uint
+	FacilityID    uint
 	Name_Facility string
+	Name_Homestay string
 }

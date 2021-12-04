@@ -16,6 +16,7 @@ func New() *echo.Echo {
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
 	}))
+
 	// route users tanpa JWT
 	e.POST("/users", controllers.CreateUserControllers)
 	e.POST("/login", controllers.LoginUserControllers)
@@ -26,6 +27,8 @@ func New() *echo.Echo {
 	e.GET("/homestay", controllers.GetAllHomestayControllers)
 	e.GET("/homestay/:id", controllers.GetHomestayByIdControllers)
 	e.GET("/homestay/address/:id", controllers.GetHomestayByAddressControllers)
+
+	// e.POST("/homestay/upload/:id", controllers.UploadFileToGCSBucket)
 
 	// route facility tanpa JWT
 	e.POST("/facility", controllers.CreateFacilityControllers)

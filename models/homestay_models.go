@@ -12,6 +12,8 @@ type Homestay struct {
 	Latitude            float64 `json:"latitude" form:"latitude"`
 	Longitude           float64 `json:"longitude" form:"longitude"`
 	UsersID             uint
+	File                string `json:"file" form:"file"`
+	Url                 string `json:"url" form:"url"`
 	Homestay_Facilities []Homestay_Facility
 }
 
@@ -24,4 +26,6 @@ type GetHomestay struct {
 	Latitude      float64
 	Longitude     float64
 	UsersID       uint
+	File          string
+	Url           string
 }

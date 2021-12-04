@@ -289,7 +289,7 @@ components:
         name_homestay:
           type: string
         price:
-          type: number
+          type: integer
         description:
           type: string
         address:
@@ -298,14 +298,14 @@ components:
       type: object
       properties:
         homestay_id:
-          type: number
+          type: integer
         facility_id:
-          type: number
+          type: integer
     requestDataReservationCheck:
       type: object
       properties:
         homestay_id:
-          type: number
+          type: integer
         start_date:
           type: string
         end_date:
@@ -317,7 +317,7 @@ components:
           type: object
           properties:
             homestay_id:
-              type: number
+              type: integer
               example: 1
             start_date:
               type: string
@@ -338,19 +338,19 @@ components:
               type: string
               example: 1000-1000-1000-1000
             cvv:
-              type: number
+              type: integer
               example: 10101
             month:
-              type: number
+              type: integer
               example: 1
             year:
-              type: number
+              type: integer
               example: 21
     responseWithData:
       type: object
       properties:
         Code:
-          type: number
+          type: integer
         Message:
           type: string
         Data:
@@ -359,7 +359,7 @@ components:
       type: object
       properties:
         Code:
-          type: number
+          type: integer
         Message:
           type: string 
   parameters:
@@ -368,7 +368,7 @@ components:
       in: path
       required: true
       schema:
-        type: number
+        type: integer
         example: 1
   securitySchemes:
     JWTAuth:

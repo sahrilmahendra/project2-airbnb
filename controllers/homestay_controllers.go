@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"project2/helper"
 	"project2/lib/databases"
@@ -137,6 +138,19 @@ func GetMyHomestayControllers(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}
 	homestay, e := databases.GetHomestayByIdUser(logged)
+	if homestay == nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
+	}
+	if e != nil {
+		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Bad Request"))
+	}
+	return c.JSON(http.StatusOK, response.SuccessResponseData("Success Operation", homestay))
+}
+
+func GetHomestayByAddressControllers(c echo.Context) error {
+	address := c.Param("id")
+	log.Println("address from controller", address)
+	homestay, e := databases.GetHomestayByAddress(address)
 	if homestay == nil {
 		return c.JSON(http.StatusBadRequest, response.BadRequestResponse("Data Not Found"))
 	}

@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "coba-instances01",
+  "private_key_id": "d1e70438ff81a8d5522dd686ed3d5e7dc8903c48",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC1SCk+imtiem1l\nOjRg8N6WlLqyMsSZ6nHkG7WHKYUfU+u2GbY3pqrP1SJ9cu2bFVl7+1C7gSGKxPlj\nPi+FvD0rSTJeTzM5uGMaI3EyNHjVzAJI+MWGTTVp+DN2hPegsQcCwxKs9r2xJT7V\ng2j0ul+CqsK+70KefavGzHNL0qkkLs4kJxdYWgMJ8/K9kklPPCwau4Ydn2TlG2eC\nfjGbMYQVyo2XGsuxPxi70wqgTrd9gaNggQx682oe/kihqmI2Pr2VnsXkZFSsoGuH\nbrj6Zz7whkZvoM5H+kzPvchhh2414NCuqWjehqCmaFodRWJluu0WasnSJ7FzGAnA\nqhyyFhGPAgMBAAECggEACHRfnA+Xl4WvMW/n/ndtYid4l5P/kFAbVLCoJDAfCcl/\nrkP/uBO5Vq0RiTlBdKCnxjz/1Gbe2hp6qRK+46VWUvz8cOKPuIrtcEwj3NwOoKX9\nm0qi57MVISaWu9nStLdc5NeVOOTfDvJ2Pj39OKCykKUHJSGCgWLKDqD9ZZVjFxFV\nhuDrEQdJXWDtBS9EJXFRVWqlPn9hmZ1SLL+cEs/EmnvKn2BsJWtV2jGcctoEO0hf\nisjEN87XxgNp/3gWyOdIRCbUz01Uvuxd+DaFVh4BNaLanf1krc+VfYBlPaAHodLd\nF3h+/RucNb+Bu7hBhaWHIzc37xNewU3shfoIweeChQKBgQDyagUDmBxBXCAxSrVG\nMTY7mA9GRzoVU/NNHNRRrNMOnxghaBt6mCFvbcNJHMKZYTC/WIIaG0j/CUmQTsD6\nwEgDiawT5vNX4uGgM3bmlXNQMAbNJ5xRI43kVLnKC1nLwGYxDaFDiPfoSuz0p/Rg\nlgBEyEipiRiqJ/np3L3uaTCUBQKBgQC/cQ+Hobl5FzWswHBv0KK/1CCSqP1R1CsC\npYDu2KXIvOSq0aXHoEHyYSk0rm7r9Sa7+5L8NXKWkO/kg9FjBbmnisnIooMzSrhP\n6CzLGJSsvY+oyLUoZ/NbB9GiyihWIK0tZlp7N5tBxVTUCfvuw9+cpIojcYd70z95\nTt/D63x3gwKBgQCFR0T6dOcUCFKqxyhjLytiGHhNa1vD3iQmgXM6dIqVv2LE+zgg\nbwPy/6YezHExYv4qNb9SGy5HChQoAySWuKDfURIK3y9rYpIqQiFdJU4BCGa05NJM\nyf95ShvbueHk5CNLVPMU7nlefdNJsA3sDIyZRISusXGeG9yLd5H1QmAzAQKBgHy2\nJVzA4PdeREwObPCaZHs8sB96UNOuuHoX4N83aQBU9U3GFw3teyhvXQ2BmKbD5ADP\nyRfdpZEqR+yAZrXwM9pOEldObtPKGDmN0ShZEflZ360fWsxAs4qYlFtNAGvjC42o\nwMbGGbEF4NXkzybimNgNZCPkwFLM8euPkzupO0MLAoGBANyI8YnuHikNj8g7Uqud\niuK/5SFHlILIPc8ukK0kXMQ9w40LfyDP1gIheDFVsdcgqh3gu7jQ6sgxzfLainm3\nKRsj3/rk1+j0HU7fn8wLpl/gsEjsLufg9nuXMTDsr5sH8coPhG3VQdGDG8u8+dIB\ny+BTNGiP+M0Yg4SMFWu8sCLk\n-----END PRIVATE KEY-----\n",
+  "client_email": "tes-bucket@coba-instances01.iam.gserviceaccount.com",
+  "client_id": "104130098758850916804",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/tes-bucket%40coba-instances01.iam.gserviceaccount.com"
+}

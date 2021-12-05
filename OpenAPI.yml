@@ -1,0 +1,1321 @@
+openapi: '3.0.3'
+info:
+  title: 'Project#2 Alta-BE4: Airbnb App'
+  version: '1.1'
+  description: 'OpenAPI for Project Airbnb App'
+  contact: 
+    name: Moch. Syahryil Mahendra
+    email: nurilhuda7337@gmail.com
+    url: https://github.com/sahrilmahendra
+servers:
+  - url: https://{environment}.server.test/api/v1
+    description: SwaggerHub API Auto Mocking
+    variables:
+      environment:
+        default: dev
+        enum: [
+          dev,
+          prod
+        ]
+externalDocs: 
+  description: "Repository Github Project#2 Airbnb App"
+  url: https://github.com/sahrilmahendra/project2-airbnb
+tags:
+  - name: Authentication
+    description: Authentication
+  - name: Users
+    description: User control
+  - name: Homestay
+    description: Homestay data management
+  - name: Facility
+    description: Feature of a facility
+  - name: Homestay Facilities
+    description: Feature of a homestay facilities
+  - name: Reservations
+    description: Feature of a homestay reservation
+paths:
+####################################
+#  AUTHENTICATION
+####################################
+  /login:
+    post:
+      tags:
+        - Authentication
+      summary: Get access to account
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyLogin'
+      responses:
+        '200':
+          $ref: '#/components/responses/loginSuccess'
+        '400':
+          $ref: '#/components/responses/loginFailed'
+####################################
+#  USERS
+####################################
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create a new account
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyUser'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/createUserFailed'
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      responses:
+        '200':
+          $ref: '#/components/responses/getAllUsersSuccess'
+        '400':
+          $ref: '#/components/responses/getAllUsersFailed'
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by id
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getUserSuccess'
+        '400':
+          $ref: '#/components/responses/getUserFailed'
+    put:
+      tags:
+        - Users
+      summary: Update user by id
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyUserUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/updateUserFailed'
+    delete:
+      tags:
+        - Users
+      summary: Delete user by id
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/deleteUserFailed'
+ ####################################
+ #  HOMESTAY
+ ####################################
+  /homestay:
+    post:
+      tags:
+        - Homestay
+      summary: Create a new homestay
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyHomestay'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/createHomestayFailed'
+        '500':
+          $ref: '#/components/responses/HomestayServerFailed'
+    get:
+      tags:
+      - Homestay
+      summary: Get all homestays
+      responses:
+        '200':
+          $ref: '#/components/responses/getManyHomestaysSuccess'
+        '400':
+          $ref: '#/components/responses/getManyHomestaysFailed'
+  /homestay/address/:id:
+    get:
+      tags:
+        - Homestay
+      summary: Get homestay by address
+      parameters:
+        - $ref: '#/components/parameters/addressParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getManyHomestaysSuccess'
+        '400':
+          $ref: '#/components/responses/getManyHomestaysFailed'
+  /homestay/mine:
+    get:
+      tags:
+        - Homestay
+      summary: Get homestay belong to user
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getManyHomestaysSuccess'
+        '400':
+          $ref: '#/components/responses/getManyHomestaysFailed'
+  /homestay/{id}:
+    get:
+      tags:
+        - Homestay
+      summary: Get homestay by id
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getHomestaySuccess'
+        '400':
+          $ref: '#/components/responses/getHomestayFailed'
+    put:
+      tags:
+        - Homestay
+      summary: Update homestay by id
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyHomestayUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/updateHomestayFailed'
+        '500':
+          $ref: '#/components/responses/HomestayServerFailed'
+    delete:
+      tags:
+      - Homestay
+      summary: Delete homestay by id
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/deleteHomestayFailed'
+####################################
+#  FACILITY
+####################################
+  /facility:
+    get:
+      tags:
+      - Facility
+      summary: Get all facilities
+      responses:
+        '200':
+          $ref: '#/components/responses/getAllFacilitiesSuccess'
+        '400':
+          $ref: '#/components/responses/getAllFacilitiesFailed'
+####################################
+#  HOMESTAY FACILITIES
+####################################
+  /homestay/facilities:
+    post:
+      tags:
+      - Homestay Facilities
+      summary: Create a homestay facility
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyHomestayFacility'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/createHomestayFacilityFailed'
+    get:
+      tags:
+        - Homestay Facilities
+      summary: Get all homestay facilities
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getAllHomestayFacilitiesSuccess'
+        '400':
+          $ref: '#/components/responses/getAllHomestayFacilitiesFailed'
+  /homestay/facilities/{id}:
+    get:
+      tags:
+        - Homestay Facilities
+      summary: Get homestay facilities by id
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/getHomestayFacilitySuccess'
+        '400':
+          $ref: '#/components/responses/getHomestayFacilityFailed'
+    put:
+      tags:
+      - Homestay Facilities
+      summary: Update homestay facility by id
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyHomestayFacilityUpdate'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/updateHomestayFacilityFailed'      
+    delete:
+      tags:
+        - Homestay Facilities
+      summary: Delete homestay facility by id
+      security:
+        - JWTAuth: []
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/deleteHomestayFacilityFailed'
+####################################
+#  RESERVATIONS
+####################################
+  /reservations/check:
+    post:
+      tags:
+        - Reservations
+      summary: Check. is homestay available?
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyCheckReservation'
+      responses:
+        '200':
+          $ref: '#/components/responses/checkReservationSuccess'
+        '400':
+          $ref: '#/components/responses/checkReservationFailed'
+  /reservations:
+    post:
+      tags:
+      - Reservations
+      summary: Create a new reservation
+      security:
+        - JWTAuth: []
+      requestBody:
+        $ref: '#/components/requestBodies/requestBodyReservation'
+      responses:
+        '200':
+          $ref: '#/components/responses/successOperationNonData'
+        '400':
+          $ref: '#/components/responses/createReservationFailed'
+    get:
+      tags:
+      - Reservations
+      summary: Get all reservations
+      security:
+        - JWTAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/getAllReservationSuccess'
+        '400':
+          $ref: '#/components/responses/getAllReservationFailed'
+####################################
+#  COMPONENTS
+####################################
+components:
+  schemas:
+    requestDataLogin:
+      type: object
+      properties:
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+    requestDataUser:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          minLength: 1
+    requestDataHomestay:
+      type: object
+      properties:
+        name_homestay:
+          type: string
+        price:
+          type: integer
+        description:
+          type: string
+        address:
+          type: string
+        file:
+          type: string
+        url:
+          type: string
+    requestDataHomestayFacility:
+      type: object
+      properties:
+        homestay_id:
+          type: integer
+        facility_id:
+          type: integer
+    requestDataReservationCheck:
+      type: object
+      properties:
+        homestay_id:
+          type: integer
+        start_date:
+          type: string
+        end_date:
+          type: string
+    requestDataReservation:
+      type: object
+      properties:
+        reservation:
+          type: object
+          properties:
+            homestay_id:
+              type: integer
+            start_date:
+              type: string
+            end_date:
+              type: string
+        credit_card:
+          type: object
+          properties:
+            typ:
+              type: string
+            name:
+              type: string
+            number:
+              type: string
+            cvv:
+              type: integer
+            month:
+              type: integer
+            year:
+              type: integer
+    responseLoginWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: object
+          properties:
+            ID:
+              type: integer
+            Name:
+              type: string
+            Token:
+              type: string
+    responseUserWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: object
+          properties:
+            ID:
+              type: integer
+            Name:
+              type: string
+            Email:
+              type: string
+    responseUserWithDataArray:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: array
+          items:
+            type: object
+            properties:
+              ID:
+                type: integer
+              Name:
+                type: string
+              Email:
+                type: string
+    responseHomestayWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: object
+          properties:
+            ID:
+              type: integer
+            Name_Homestay:
+              type: string
+            Price:
+              type: string 
+            Description:
+              type: string
+            Address: 
+              type: string
+            Latitude:
+              type: number
+            Longitude:
+              type: number
+            UsersID:
+              type: integer
+            File:
+              type: string
+            Url:
+              type: string
+    responseHomestayWithDataArray:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: array
+          items:
+            type: object
+            properties:
+              ID:
+                type: integer
+              Name_Homestay:
+                type: string
+              Price:
+                type: string 
+              Description:
+                type: string
+              Address: 
+                type: string
+              Latitude:
+                type: number
+              Longitude:
+                type: number
+              UsersID:
+                type: integer
+              File:
+                type: string
+              Url:
+                type: string  
+    responseFacilityWithDataArray:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: array
+          items:
+            type: object
+            properties:
+              ID:
+                type: integer
+              Name_Facility:
+                type: string
+    responseHomestayFacilityWithData:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: object
+          properties:
+            ID:
+              type: integer
+            HomestayID:
+              type: integer
+            FacilityID:
+              type: integer
+            Name_Facility:
+              type: string
+            Name_Homestay:
+              type: string
+    responseHomestayFacilityWithDataArray:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: array
+          items:
+            type: object
+            properties:
+              ID:
+                type: integer
+              HomestayID:
+                type: integer
+              FacilityID:
+                type: integer
+              Name_Facility:
+                type: string
+              Name_Homestay:
+                type: string
+    responseReservationWithDataArray:
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string
+        Data:
+          type: array
+          items:
+            type: object
+            properties:
+              UsersID:
+                type: integer
+              HomestayID:
+                type: integer
+              Name_Homestay:
+                type: string
+              Start_date:
+                type: string
+              End_date:
+                type: string
+              Price:
+                type: integer
+              Total_harga:
+                type: integer
+    responseNonData: 
+      type: object
+      properties:
+        Code:
+          type: integer
+        Message:
+          type: string 
+  parameters:
+    idParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 1
+    addressParam:
+      name: address
+      in: path
+      required: true
+      schema:
+        type: string
+        example: dago
+  securitySchemes:
+    JWTAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "use Token"
+  requestBodies:
+    requestBodyLogin:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataLogin'
+          examples:
+            user1:
+              value:
+                email: supriadi15001@gmail.com
+                password: qwerty
+            user2:
+              value:
+                email: sahrilmahendra@gmail.com
+                password: asdfg
+            user3:
+              value:
+                email: nurilhuda7337@gmail.com
+                password: "12345"
+    requestBodyUser:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataUser'
+          examples:
+            newUser1:
+              value:
+                name: Nuril Huda
+                email: nurilhuda7337@gmail.com
+                password: qwerty
+            newUser2:
+              value:
+                name: Supriadi
+                email: supriadi15001@gmail.com
+                password: qwerty
+            newUser3:
+              value:
+                name: Sahril Mahendra
+                email: sahrilmahendra@gmail.com
+                password: qwerty
+    requestBodyUserUpdate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataUser'
+          examples:
+            newData1:
+              value:
+                name: Sahril Real
+                email: sahrilasli@gmail.com
+                password: rahasia
+            newData2:
+              value:
+                name: Nuriel Noah
+                email: nurielnoah@gmail.com
+                password: saudaranyaarielnoah
+            newData3:
+              value:
+                name: New Supriadi
+                email: supriadinew@gmail.com
+                password: newpass
+    requestBodyHomestay:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataHomestay'
+          examples:
+            homestay1:
+              value:
+                name_homestay: Rumah Jendela
+                price: 1300000
+                description: We serve the best our place for your satisfaction
+                address: Dago Atas, Bandung
+                file: homestay-try-upload-file-2021-12-05T07:19:15.jpeg
+                url: https://storage.googleapis.com/sahril-bucket/homestay-try-upload-file-2021-12-05T07:19:15.jpeg
+    requestBodyHomestayUpdate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataHomestay'
+          examples:
+            homestay1:
+              value:
+                name_homestay: Rumah Jendela Update
+                price: 1500000
+                description: We improve our place for your satisfaction
+                address: Dago, Bandung
+                file: homestay-try2-upload-file-2021-12-05T07:19:15.jpeg
+                url: https://storage.googleapis.com/sahril-bucket/homestay-try-upload-file-2021-12-05T07:19:15.jpeg
+    requestBodyHomestayFacility:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataHomestayFacility'
+          examples:
+            newHometayFacility:
+              value:
+                homestay_id: 1
+                facility_id: 1
+    requestBodyHomestayFacilityUpdate:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/requestDataHomestayFacility'
+          examples:
+            newDataHometayFacility:
+              value:
+                homestay_id: 2
+                facility_id: 3
+    requestBodyCheckReservation:
+      required: true
+      content:
+        application/json:
+          schema:  
+            $ref: '#/components/schemas/requestDataReservationCheck'
+          example:
+            homestay_id: 1
+            start_date: "2021-11-30"
+            end_date: "2021-12-01"
+    requestBodyReservation: 
+      required: true
+      content:
+        application/json:
+          schema:  
+            $ref: '#/components/schemas/requestDataReservation'
+          example:
+            reservation:
+              homestay_id: 1
+              start_date: "2021-11-30"
+              end_date: "2021-12-01"
+            credit_card:
+                typ: Master Card
+                name: Supriadi
+                number: 1111-1111-1111-1111
+                cvv: 111
+                month: 12
+                year: 21
+  responses:
+    loginSuccess:
+      description: Login Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseLoginWithData'
+          example:
+            Code: 200
+            Message: Login Success
+            Data: {
+              ID: 1,
+              Name: Supriadi,
+              Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgxOTUwMDksInVzZXJJZCI6MX0.0gso_gffYqaDGmCTqYClvhaNZZdbe7FbV7hJ02lOpoQ
+            }
+    loginFailed:
+      description: Login Failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 400 
+            Message: Email or Password Incorrect
+    successOperationNonData:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          example:
+            Code: 200
+            Message: Success Operation
+    createUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    getAllUsersSuccess:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseUserWithDataArray'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: [{
+              ID: 1,
+              Name: Supriadi,
+              Email: supriadi15000@gmail.com
+              },
+              {
+              ID: 2,
+              Name: Nuril Huda,
+              Email: nurilhuda7337@gmail.com
+              },
+              {
+              ID: 3,
+              Name: Sahril Mahendra,
+              Email: sahrilmahendra@gmail.com
+              }]
+    getAllUsersFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    getUserSuccess:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseUserWithData'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: {
+              ID: 1,
+              Name: Supriadi,
+              Email: supriadi15000@gmail.com
+            }
+    getUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    updateUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Access Forbidden:
+                $ref: '#/components/examples/accessForbidden'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    deleteUserFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Access Forbidden:
+                $ref: '#/components/examples/accessForbidden'
+    createHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            File Extension Not Allowed:
+              $ref: '#/components/examples/fileExtensionNotAllowed'
+            Illegal File:
+              $ref: '#/components/examples/illegalFile'
+            Size File Too Big:
+              $ref: '#/components/examples/sizeFileTooBig'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    HomestayServerFailed:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Can't Connect to Server:
+              $ref: '#/components/examples/cantConnecttoServer'
+            Failed to Upload File:
+              $ref: '#/components/examples/failedtoUploadFile'
+    getManyHomestaysSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseHomestayWithDataArray'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: [
+                { ID: 1,
+                Name_Homestay: Rumah Jendela,
+                Price: 1300000,
+                Description: We serve the best our place for your satisfaction,
+                Address: "Dago, Bandung",
+                Latitude: -6.877258,
+                Longitude: 107.617412,
+                UsersID: 1,
+                File: homestay-try-upload-file-2021-12-05T07:19:15.jpeg,
+                Url: https://storage.googleapis.com/sahril-bucket/homestay-try-upload-file-2021-12-05T07:19:15.jpeg
+                },
+                { ID: 2,
+                Name_Homestay: Rumah Kaca,
+                Price: 1500000,
+                Description: Fresh and cool. Wuuush..,
+                Address: "Dago, Bandung",
+                Latitude: -6.877258,
+                Longitude: 107.617412,
+                UsersID: 1,
+                File: homestay-upload-file-2021-12-05T07:19:15.jpeg,
+                Url: https://storage.googleapis.com/sahril-bucket/homestay-upload-file-2021-12-05T07:19:15.jpeg
+                }
+            ]
+    getManyHomestaysFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    getHomestaySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseHomestayWithData'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: { 
+                ID: 1,
+                Name_Homestay: Rumah Jendela,
+                Price: 1300000,
+                Description: We serve the best our place for your satisfaction,
+                Address: "Dago, Bandung",
+                Latitude: -6.877258,
+                Longitude: 107.617412,
+                UsersID: 1,
+                File: homestay-try-upload-file-2021-12-05T07:19:15.jpeg,
+                Url: https://storage.googleapis.com/sahril-bucket/homestay-try-upload-file-2021-12-05T07:19:15.jpeg
+            }
+    getHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    updateHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Access Forbidden:
+              $ref: '#/components/examples/accessForbidden'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+            File Extension Not Allowed:
+              $ref: '#/components/examples/fileExtensionNotAllowed'
+            Illegal File:
+              $ref: '#/components/examples/illegalFile'
+            Size File Too Big:
+              $ref: '#/components/examples/sizeFileTooBig'
+    deleteHomestayFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Access Forbidden:
+              $ref: '#/components/examples/accessForbidden'
+    getAllFacilitiesSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseFacilityWithDataArray'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: [{
+                ID: 1,
+                Name_Facility: Wi-Fi,
+              },
+              {
+                ID: 2,
+                Name_Facility: Kolam Renang,
+              }            
+            ]
+    getAllFacilitiesFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    createHomestayFacilityFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+            Data is Available:
+              $ref: '#/components/examples/dataisAvailable'
+    getAllHomestayFacilitiesSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseHomestayFacilityWithDataArray'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: [{
+                ID: 1,
+                HomestayID: 1,
+                FacilityID: 1,
+                Name_Facility: Wi-Fi,
+                Name_Homestay: Rumah Jendela
+              },
+              {
+                ID: 2,
+                HomestayID: 1,
+                FacilityID: 2,
+                Name_Facility: Kolam Renang,
+                Name_Homestay: Rumah Jendela
+              }            
+            ]
+    getAllHomestayFacilitiesFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    getHomestayFacilitySuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseHomestayFacilityWithData'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: {
+                ID: 1,
+                HomestayID: 1,
+                FacilityID: 1,
+                Name_Facility: Wi-Fi,
+                Name_Homestay: Rumah Jendela
+            }
+    getHomestayFacilityFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    updateHomestayFacilityFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Data is Available:
+              $ref: '#/components/examples/dataisAvailable'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    deleteHomestayFacilityFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Id:
+              $ref: '#/components/examples/invalidId'
+            Access Forbidden:
+              $ref: '#/components/examples/accessForbidden'
+    checkReservationSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Available:
+              value:
+                Code: 200
+                Message: Success Operation
+                Data: Available
+            Not Available:
+              value:
+                Code: 200
+                Message: Success Operation
+                Data: Not Available
+    checkReservationFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Invalid Date:
+              $ref: '#/components/examples/invalidDate'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+    createReservationFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+            Invalid Date:
+              $ref: '#/components/examples/invalidDate'
+            Not Available:
+              $ref: '#/components/examples/notAvailable'
+            Access Forbidden:
+              $ref: '#/components/examples/accessForbidden'
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+    getAllReservationSuccess:
+      description: Successful Operation
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseReservationWithDataArray'
+          example:
+            Code: 200
+            Message: Success Operation
+            Data: [{
+              UserID: 3,
+              HomestayID: 1,
+              Name_Homestay: Rumah Jendela,
+              Start_date: "2021-11-30",
+              End_date: "2021-13-01",
+              Price: 1300000,
+              Total_harga: 2600000
+              },
+              {
+                UserID: 3,
+                HomestayID: 2,
+                Name_Homestay: Rumah Kaca,
+                Start_date: "2021-11-30",
+                End_date: "2021-13-01",
+                Price: 1500000,
+                Total_harga: 3000000,
+              }            
+            ]
+    getAllReservationFailed:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/responseNonData'
+          examples:
+            Bad Request:
+              $ref: '#/components/examples/badRequest'
+            Data Not Found:
+              $ref: '#/components/examples/dataNotFound'
+  examples:
+    accessForbidden:
+      value:
+        Code: 400
+        Message: Access Forbidden                
+    badRequest:
+      value:
+        Code: 400
+        Message: Bad Request
+    cantConnecttoServer:
+      value:
+        Code: 500
+        Message: Can't Connect to server
+    dataisAvailable:
+      value:
+        Code: 400
+        Message: Data is Available
+    dataNotFound:
+      value:
+        Code: 400
+        Message: Data Not Found
+    failedtoUploadFile:
+      value:
+        Code: 500
+        Message: Failed to Upload File
+    fileExtensionNotAllowed:
+      value:
+        Code: 400
+        Message: File Extension Not Allowed
+    invalidId:
+      value:
+        Code: 400
+        Message: Invalid Id
+    invalidDate:
+      value:
+        Code: 400
+        Message: Invalid Date
+    illegalFile:
+      value:
+        Code: 400
+        Message: Illegal File
+    notAvailable:
+      value:
+        Code: 400
+        Message: Not Available
+    sizeFileTooBig:
+      value:
+        Code: 400
+        Message: Size File Too Big

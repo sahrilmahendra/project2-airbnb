@@ -36,18 +36,6 @@ func GetUserById(id int) (interface{}, error) {
 	return get_user, nil
 }
 
-// function database untuk mengecek user by email
-func GetUserByEmail(email string) (int, error) {
-	check := config.DB.Where("email = ?", email).First(&user)
-	if check.Error != nil {
-		return 0, check.Error
-	}
-	if check.RowsAffected > 0 {
-		return int(check.RowsAffected), nil
-	}
-	return 0, nil
-}
-
 // function database untuk menambahkan user baru (registrasi)
 func CreateUser(user *models.Users) (interface{}, error) {
 	if err := config.DB.Create(&user).Error; err != nil {

@@ -13,7 +13,7 @@
   <p align="center">
     Project Airbnb Program Immersive Back End Batch 4
     <br />
-    <a href="https://github.com/sahrilmahendra/project2-airbnb"><strong>Explore the docs »</strong></a>
+    <a href="https://app.swaggerhub.com/apis-docs/supriadi15001/Project2_Alta-BE4_AirbnbApp_v1/1.1"><strong>Explore the docs Open API »</strong></a>
     <br />
   </p>
 </div>
@@ -52,9 +52,9 @@ Berikut merupakan fitur yang terdapat dalam project ini :
 * [JWT](https://echo.labstack.com/cookbook/jwt)
 * [Assert](https://pkg.go.dev/github.com/stretchr/testify/assert)
 * [VS Code](https://code.visualstudio.com/) -->
-![VS Code](https://img.shields.io/badge/-Visual%20Studio%20Code-05122A?style=flat&logo=visual-studio-code&logoColor=9A9A9A)&nbsp;
-![MySQL](https://img.shields.io/badge/-MySQL-05122A?style=flat&logo=mysql&logoColor=9A9A9A)&nbsp;
-![Golang](https://img.shields.io/badge/-Golang-05122A?style=flat&logo=go&logoColor=9A9A9A)&nbsp;
+![VS Code](https://img.shields.io/badge/-Visual%20Studio%20Code-05122A?style=flat&logo=visual-studio-code&logoColor=FFFFFF)&nbsp;
+![MySQL](https://img.shields.io/badge/-MySQL-05122A?style=flat&logo=mysql&logoColor=FFFFFF)&nbsp;
+![Golang](https://img.shields.io/badge/-Golang-05122A?style=flat&logo=go&logoColor=FFFFFF)&nbsp;
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -65,7 +65,8 @@ Berikut merupakan fitur yang terdapat dalam project ini :
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/sahrilmahendra/project2-airbnb](https://github.com/sahrilmahendra/project2-airbnb)
+Project Link : [https://github.com/sahrilmahendra/project2-airbnb](https://github.com/sahrilmahendra/project2-airbnb)<br/>
+Open API Documentation : [https://app.swaggerhub.com/apis-docs/supriadi15001/Project2_Alta-BE4_AirbnbApp_v1/1.1](https://app.swaggerhub.com/apis-docs/supriadi15001/Project2_Alta-BE4_AirbnbApp_v1/1.1)&nbsp;
 <!-- :heart: -->
 <!-- CONTRIBUTOR -->
 Contributor :
